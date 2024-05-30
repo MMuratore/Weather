@@ -6,6 +6,6 @@ public sealed class OutboxMessage
     public required string Type { get; init; }
     public required string Content { get; init; }
     public DateTimeOffset CreationTime { get; init; }
-    public DateTimeOffset? CompleteTime { get; init; }
-    public string? Exception { get; init; }
+    public DateTimeOffset? CompleteTime { get; set; }
+    public string? Exception { get; set; }
 }

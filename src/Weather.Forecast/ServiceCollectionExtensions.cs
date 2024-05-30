@@ -43,6 +43,7 @@ public static class ServiceCollectionExtensions
 
     builder.Services.AddHostedService<ForecastSeederHostedService>();
     builder.Services.AddSingleton<ForecastFactory>();
+    builder.Services.AddHostedService<OutboxMessageProcessor<ForecastDbContext>>();
     
     moduleAssemblies.Add(typeof(ServiceCollectionExtensions).Assembly);
 

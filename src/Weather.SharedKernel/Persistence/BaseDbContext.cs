@@ -41,7 +41,7 @@ public abstract class BaseDbContext(DbContextOptions options) : DbContext(option
         {
             Id = Guid.NewGuid(),
             CreationTime = DateTimeOffset.UtcNow,
-            Type = message.GetType().Name,
+            Type = message.GetType().AssemblyQualifiedName ?? throw new ArgumentNullException(nameof(message)),
             Content = JsonSerializer.Serialize((object)message)
         }, cancellationToken);
     }
