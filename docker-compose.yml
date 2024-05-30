@@ -1,0 +1,80 @@
+﻿services:
+  weather.api:
+    image: weather.api
+    profiles:
+      - backend
+    build:
+      context: .
+      dockerfile: src/Weather.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.weather.loadbalancer.server.port=8080"
+      - "traefik.http.routers.weather.rule=Host(`weather.docker.localhost`)"
+      - "traefik.http.routers.weather.tls=true"
+    
+  traefik:
+    image: traefik:v2.11
+    profiles:
+      - infra
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 80:80
+      - 443:443
+      - 5432:5432
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./.traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./.traefik/config.yml:/etc/traefik/config.yml:ro
+      - ~/.ssl:/etc/traefik/ssl:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik=true"
+
+  aspire:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:8.0.0
+    profiles:
+      - infra
+    environment:
+      DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS: true
+      DASHBOARD__OTLP__AUTHMODE: ApiKey
+      DASHBOARD__OTLP__PRIMARYAPIKEY:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.aspire.loadbalancer.server.port=18888"
+      - "traefik.http.routers.aspire.rule=Host(`aspire.docker.localhost`)"
+      - "traefik.http.routers.aspire.tls=true"
+
+  postgres:
+    image: postgres:latest
+    profiles:
+      - infra
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: P@ssw0rd
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U exampleuser"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.postgres.entrypoints=postgres"
+      - "traefik.http.services.postgres.loadbalancer.server.port=5432"
+      - "traefik.tcp.routers.postgres.rule=HostSNI(`*`)"
+
+volumes:
+  postgres:

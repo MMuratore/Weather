@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3DA85803-20A5-426C-ABAC-A8E625157F18}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Makefile = Makefile
+		Directory.Build.props = Directory.Build.props
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A47C9F5E-5AAC-4B74-AF0D-9906C2A6797A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B87DB99E-B997-4459-A1FA-65D34FF45354}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Api", "src\Weather.Api\Weather.Api.csproj", "{1E882A3D-8F5B-4417-B83D-94376C54A852}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.SharedKernel", "src\Weather.SharedKernel\Weather.SharedKernel.csproj", "{2FD04B93-776D-4683-8017-A51D1228DCB4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forecast", "Forecast", "{E3398216-4DE5-4308-935F-713FD8EFB8C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Forecast", "src\Weather.Forecast\Weather.Forecast.csproj", "{F3B4754D-DF7F-495C-B92B-2F6B3FACFE34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notification", "Notification", "{159F50BA-EABB-4DC1-AA28-5CCCA4B5C177}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Notification", "src\Weather.Notification\Weather.Notification.csproj", "{06CD3FCF-9AD1-44B2-9B7E-A2FA5616D1C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Forecast.Contract", "src\Weather.Forecast.Contract\Weather.Forecast.Contract.csproj", "{2A4609BE-C8E8-4B59-BE88-8DE88C54F92B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E882A3D-8F5B-4417-B83D-94376C54A852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E882A3D-8F5B-4417-B83D-94376C54A852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E882A3D-8F5B-4417-B83D-94376C54A852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E882A3D-8F5B-4417-B83D-94376C54A852}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FD04B93-776D-4683-8017-A51D1228DCB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD04B93-776D-4683-8017-A51D1228DCB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FD04B93-776D-4683-8017-A51D1228DCB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FD04B93-776D-4683-8017-A51D1228DCB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3B4754D-DF7F-495C-B92B-2F6B3FACFE34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3B4754D-DF7F-495C-B92B-2F6B3FACFE34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3B4754D-DF7F-495C-B92B-2F6B3FACFE34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3B4754D-DF7F-495C-B92B-2F6B3FACFE34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06CD3FCF-9AD1-44B2-9B7E-A2FA5616D1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06CD3FCF-9AD1-44B2-9B7E-A2FA5616D1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06CD3FCF-9AD1-44B2-9B7E-A2FA5616D1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06CD3FCF-9AD1-44B2-9B7E-A2FA5616D1C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A4609BE-C8E8-4B59-BE88-8DE88C54F92B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A4609BE-C8E8-4B59-BE88-8DE88C54F92B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A4609BE-C8E8-4B59-BE88-8DE88C54F92B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A4609BE-C8E8-4B59-BE88-8DE88C54F92B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1E882A3D-8F5B-4417-B83D-94376C54A852} = {A47C9F5E-5AAC-4B74-AF0D-9906C2A6797A}
+		{2FD04B93-776D-4683-8017-A51D1228DCB4} = {A47C9F5E-5AAC-4B74-AF0D-9906C2A6797A}
+		{E3398216-4DE5-4308-935F-713FD8EFB8C0} = {A47C9F5E-5AAC-4B74-AF0D-9906C2A6797A}
+		{F3B4754D-DF7F-495C-B92B-2F6B3FACFE34} = {E3398216-4DE5-4308-935F-713FD8EFB8C0}
+		{159F50BA-EABB-4DC1-AA28-5CCCA4B5C177} = {A47C9F5E-5AAC-4B74-AF0D-9906C2A6797A}
+		{06CD3FCF-9AD1-44B2-9B7E-A2FA5616D1C7} = {159F50BA-EABB-4DC1-AA28-5CCCA4B5C177}
+		{2A4609BE-C8E8-4B59-BE88-8DE88C54F92B} = {E3398216-4DE5-4308-935F-713FD8EFB8C0}
+	EndGlobalSection
+EndGlobal
