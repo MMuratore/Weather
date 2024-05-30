@@ -4,34 +4,31 @@ using Weather.SharedKernel.Persistence;
 
 namespace Weather.Forecast.Persistence;
 
-internal sealed class ForecastDbContext(DbContextOptions<ForecastDbContext> options) : DbContext(options)
+internal sealed class ForecastDbContext : BaseDbContext
 {
-    private readonly PublishDomainEventsInterceptor? _domainEventsInterceptor;
     private const string Schema = "forecast";
     
-    public ForecastDbContext(DbContextOptions<ForecastDbContext> options,
-        PublishDomainEventsInterceptor? domainEventsInterceptor) : this(options)
+    public ForecastDbContext(DbContextOptions<ForecastDbContext> options) : base(options)
     {
-        _domainEventsInterceptor = domainEventsInterceptor;
+    }
+    
+    public ForecastDbContext(DbContextOptions<ForecastDbContext> options,
+        PublishDomainEventsInterceptor domainEventsInterceptor) : base(options, domainEventsInterceptor)
+    {
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema(Schema);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        base.OnModelCreating(modelBuilder);
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseNpgsql();
-        if (_domainEventsInterceptor is not null)
-        {
-            optionsBuilder.AddInterceptors(_domainEventsInterceptor);
-        }
-    }
-    
-    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-    {
-        configurationBuilder.Properties<Enum>().HaveConversion<string>();
+        
+        base.OnConfiguring(optionsBuilder);
     }
 }

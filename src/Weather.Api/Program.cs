@@ -18,7 +18,7 @@ List<Assembly> moduleAssemblies = [typeof(Program).Assembly];
 
 builder.AddForecastModule(moduleAssemblies);
 builder.AddNotificationModule(moduleAssemblies);
-builder.AddDomainEventDispatcher(moduleAssemblies);
+builder.AddTransactionalDispatcher(moduleAssemblies);
 
 var app = builder.Build();
 
