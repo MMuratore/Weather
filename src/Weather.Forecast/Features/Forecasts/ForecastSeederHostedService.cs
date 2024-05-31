@@ -2,10 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Weather.Forecast.Domain;
+using Weather.Forecast.Features.Forecasts.Domain;
 using Weather.Forecast.Persistence;
 
-namespace Weather.Forecast;
+namespace Weather.Forecast.Features.Forecasts;
 
 internal sealed class ForecastSeederHostedService(ILogger<ForecastSeederHostedService> logger, IServiceProvider provider, ForecastSeedHealthCheck forecastSeedHealthCheck, ForecastFactory forecastFactory) : BackgroundService
 {

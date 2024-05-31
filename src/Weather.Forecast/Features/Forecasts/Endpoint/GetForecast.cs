@@ -1,12 +1,12 @@
 ﻿using FastEndpoints;
 using FastEndpoints.AspVersioning;
 using Microsoft.AspNetCore.Builder;
-using Weather.Forecast.Domain;
-using Weather.Forecast.Endpoint.Response;
+using Weather.Forecast.Features.Forecasts.Domain;
+using Weather.Forecast.Features.Forecasts.Endpoint.Response;
 using Weather.Forecast.Persistence;
 using Weather.SharedKernel;
 
-namespace Weather.Forecast.Endpoint;
+namespace Weather.Forecast.Features.Forecasts.Endpoint;
 
 internal sealed class GetForecast(ForecastDbContext dbContext) : Endpoint<GetForecastRequest, ForecastResponse>
 {

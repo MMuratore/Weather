@@ -4,7 +4,7 @@ using Weather.SharedKernel.Persistence;
 
 namespace Weather.Forecast.Persistence;
 
-internal sealed class ForecastDbContext : BaseDbContext
+internal sealed class ForecastDbContext : TransactionalDbContext
 {
     private const string Schema = "forecast";
     

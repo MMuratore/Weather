@@ -1,4 +1,4 @@
-﻿namespace Weather.Forecast.Domain;
+﻿namespace Weather.Forecast.Features.Forecasts.Domain;
 
 internal readonly record struct WeatherForecastId
 {

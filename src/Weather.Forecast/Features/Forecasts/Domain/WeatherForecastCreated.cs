@@ -1,8 +1,9 @@
-﻿using Weather.SharedKernel.Domain;
+﻿using Weather.Forecast.Features.Meteorologists.Domain;
+using Weather.SharedKernel.Domain;
 
-namespace Weather.Forecast.Domain;
+namespace Weather.Forecast.Features.Forecasts.Domain;
 
-internal sealed record WeatherForecastCreated(Summary? Summary) : IDomainEvent;
+internal sealed record WeatherForecastCreated(Summary? Summary, MeteorologistId? MeteorologistId) : IDomainEvent;
 
 internal static class WeatherForecastCreatedMapper
 {

@@ -1,6 +1,7 @@
-using Weather.Forecast.Domain;
+using Weather.Forecast.Features.Forecasts.Domain;
+using Weather.Forecast.Features.Meteorologists.Domain;
 
-namespace Weather.Forecast;
+namespace Weather.Forecast.Features.Forecasts;
 
 internal sealed class ForecastFactory
 {
@@ -9,7 +10,7 @@ internal sealed class ForecastFactory
     private const decimal TemperatureFrom = -70m;
     private const decimal TemperatureTo = 70m;
     
-    public IEnumerable<WeatherForecast> Create(int number = 1)
+    public IEnumerable<WeatherForecast> Create(int number = 1, MeteorologistId? meteorologistId = null)
     {
         for (var i = 0; i < number; i++)
         {
@@ -30,7 +31,7 @@ internal sealed class ForecastFactory
                 _ => null
             };
         
-            yield return WeatherForecast.Create(_dateFrom.AddDays(Random.Shared.Next(DateRange)), new Temperature(celsius), summary);
+            yield return WeatherForecast.Create(_dateFrom.AddDays(Random.Shared.Next(DateRange)), new Temperature(celsius), summary, meteorologistId);
         }
     }
 }

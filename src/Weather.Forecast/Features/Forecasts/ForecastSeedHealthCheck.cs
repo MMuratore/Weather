@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace Weather.Forecast;
+namespace Weather.Forecast.Features.Forecasts;
 
 internal sealed class ForecastSeedHealthCheck : IHealthCheck
 {

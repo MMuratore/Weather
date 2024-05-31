@@ -1,12 +1,15 @@
 ﻿using FastEndpoints;
 using FastEndpoints.AspVersioning;
 using Microsoft.AspNetCore.Builder;
-using Weather.Forecast.Domain;
-using Weather.Forecast.Endpoint.Response;
+using Microsoft.EntityFrameworkCore;
+using Weather.Forecast.Features.Forecasts.Domain;
+using Weather.Forecast.Features.Forecasts.Endpoint.Response;
+using Weather.Forecast.Features.Meteorologists.Domain;
+using Weather.Forecast.Features.Meteorologists.Endpoint;
 using Weather.Forecast.Persistence;
 using Weather.SharedKernel;
 
-namespace Weather.Forecast.Endpoint;
+namespace Weather.Forecast.Features.Forecasts.Endpoint;
 
 internal sealed class CreateForecast(ForecastFactory factory, ForecastDbContext dbContext) : EndpointWithoutRequest
 {
@@ -23,11 +26,13 @@ internal sealed class CreateForecast(ForecastFactory factory, ForecastDbContext 
     
     public override async Task HandleAsync(CancellationToken ct)
     {
-        var weatherForecast = factory.Create().First();
+        var meteorologist = dbContext.Set<Meteorologist>().AsNoTracking().OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+        
+        var weatherForecast = factory.Create(meteorologistId: meteorologist?.Id).First();
         
         await dbContext.Set<WeatherForecast>().AddAsync(weatherForecast, ct);
         await dbContext.SaveChangesAsync(ct);
         
-        await SendCreatedAtAsync<GetForecast>(new { Id = (Guid)weatherForecast.Id }, weatherForecast.ToResponse(), cancellation: ct);
+        await SendCreatedAtAsync<GetForecast>(new { Id = (Guid)weatherForecast.Id }, weatherForecast.ToResponse(meteorologist?.ToResponse()), cancellation: ct);
     }
 }

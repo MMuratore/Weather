@@ -1,52 +1,48 @@
-﻿using System.Reflection;
-using System.Text.Json;
+﻿using System.Text.Json;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Weather.SharedKernel.Domain;
+using Microsoft.Extensions.Options;
 using Weather.SharedKernel.Persistence;
 
 namespace Weather.SharedKernel.Outbox;
 
-public sealed class OutboxMessageProcessor<TDbContext> : BackgroundService where TDbContext : BaseDbContext
+public sealed class OutboxMessageProcessor<TDbContext>(
+    ILogger<OutboxMessageProcessor<TDbContext>> logger,
+    IServiceProvider serviceProvider, IOptions<OutboxMessageProcessorOptions> options)
+    : BackgroundService
+    where TDbContext : BaseDbContext
 {
-    private readonly ILogger<OutboxMessageProcessor<TDbContext>> _logger;
-    private readonly IServiceProvider _serviceProvider;
-
-    public OutboxMessageProcessor(ILogger<OutboxMessageProcessor<TDbContext>> logger, IServiceProvider serviceProvider)
-    {
-        _logger = logger;
-        _serviceProvider = serviceProvider;
-    }
+    private OutboxMessageProcessorOptions Options { get; } = options.Value;
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Timed Hosted Service running.");
+        logger.LogInformation("{DbContextName} Outbox Message Processor Hosted Service running.", typeof(TDbContext).Name);
 
-        using PeriodicTimer timer = new(TimeSpan.FromSeconds(10));
+        using PeriodicTimer timer = new(Options.Period);
         
         try
         {
             while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                await DoWorkAsync(stoppingToken);
+                await PublishIntegrationEventAsync(stoppingToken);
             }
         }
         catch (OperationCanceledException)
         {
-            _logger.LogInformation("Timed Hosted Service is stopping.");
+            logger.LogInformation("{DbContextName} Outbox Message Processor Hosted Service is stopping.", typeof(TDbContext).Name);
         }
     }
     
-    private async Task DoWorkAsync(CancellationToken stoppingToken)
+    private async Task PublishIntegrationEventAsync(CancellationToken stoppingToken)
     {
-        using var scope = _serviceProvider.CreateScope();
+        using var scope = serviceProvider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
         var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
         
-        var messages = await dbContext.OutboxIntegrationEvent.Where(x => x.CompleteTime == null).Take(10).ToListAsync(cancellationToken: stoppingToken);
+        var messages = await dbContext.Set<OutboxMessage>().Where(x => x.CompleteTime == null).OrderBy(x => x.CreationTime).Take(Options.MaximumConcurrentMessage).ToListAsync(cancellationToken: stoppingToken);
         
         foreach (var message in messages)
         {
@@ -55,7 +51,7 @@ public sealed class OutboxMessageProcessor<TDbContext> : BackgroundService where
                 var type = Type.GetType(message.Type);
                 if (type is null)
                 {
-                    _logger.LogError("Type not found. Integration Event Id: '{IntegrationEventId}'", message.Id);
+                    logger.LogError("Type not found. Integration Event Id: '{IntegrationEventId}'", message.Id);
                     continue;
                 }
                 
@@ -63,7 +59,7 @@ public sealed class OutboxMessageProcessor<TDbContext> : BackgroundService where
                 
                 if (integrationEvent == null)
                 {
-                    _logger.LogError("An error occurred during deserialization. Integration Event Id: '{IntegrationEventId}'", message.Id);
+                    logger.LogError("An error occurred during deserialization. Integration Event Id: '{IntegrationEventId}'", message.Id);
                     continue;
                 }
                 
@@ -71,7 +67,7 @@ public sealed class OutboxMessageProcessor<TDbContext> : BackgroundService where
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"An error occurred processing domain event messages.");
+                logger.LogError(ex, $"An error occurred processing domain event messages.");
                 message.Exception = ex.Message;
             }
             finally

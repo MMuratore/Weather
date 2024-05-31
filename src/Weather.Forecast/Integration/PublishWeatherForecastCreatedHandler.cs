@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Weather.Forecast.Domain;
+using Weather.Forecast.Features.Forecasts.Domain;
 using Weather.Forecast.Persistence;
 
 namespace Weather.Forecast.Integration;

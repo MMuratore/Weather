@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Weather.Forecast.Domain;
-using Weather.Forecast.Endpoint.Response;
+using Weather.Forecast.Features.Forecasts.Domain;
+using Weather.Forecast.Features.Forecasts.Endpoint.Response;
 using Weather.Forecast.Persistence;
 using Weather.SharedKernel;
 
-namespace Weather.Forecast.Endpoint;
+namespace Weather.Forecast.Features.Forecasts.Endpoint;
 
 internal sealed class GetRandomForecast(ILogger<GetRandomForecast> logger, ForecastDbContext dbContext) : 
     EndpointWithoutRequest<Results<Ok<List<ForecastResponse>>, ProblemDetails>>

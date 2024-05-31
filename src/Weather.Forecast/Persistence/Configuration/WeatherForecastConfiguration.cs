@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Weather.Forecast.Domain;
+using Weather.Forecast.Features.Forecasts.Domain;
+using Weather.Forecast.Features.Meteorologists.Domain;
 
 namespace Weather.Forecast.Persistence.Configuration;
 
@@ -23,5 +24,7 @@ internal sealed class WeatherForecastConfiguration : IEntityTypeConfiguration<We
             .HasColumnName(nameof(Temperature.Celsius));
         
         builder.Property(x => x.Summary).HasMaxLength(10);
+        
+        builder.HasOne<Meteorologist>().WithMany().HasForeignKey(x => x.MeteorologistId);
     }
 }

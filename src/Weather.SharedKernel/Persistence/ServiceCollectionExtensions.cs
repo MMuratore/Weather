@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Weather.SharedKernel.Outbox;
 
 namespace Weather.SharedKernel.Persistence;
 
@@ -10,6 +12,7 @@ public static class ServiceCollectionExtensions
   {
       builder.Services.AddMediatR(o => o.RegisterServicesFromAssemblies(assemblies.ToArray()));
       builder.Services.AddScoped<PublishDomainEventsInterceptor>();
+      builder.Services.Configure<OutboxMessageProcessorOptions>(builder.Configuration.GetRequiredSection(OutboxMessageProcessorOptions.Section));
       
       return builder;
   }
