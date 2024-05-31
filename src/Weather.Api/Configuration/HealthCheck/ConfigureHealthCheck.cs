@@ -13,8 +13,8 @@ internal static class ConfigureHealthCheck
     internal static WebApplicationBuilder AddHealthChecks(this WebApplicationBuilder builder)
     {
         builder.Services.AddHealthChecks()
-          .AddCheck(LivenessProbeName, () => HealthCheckResult.Healthy());
-      
+            .AddCheck(LivenessProbeName, () => HealthCheckResult.Healthy());
+        
         return builder;
     }
     
@@ -23,16 +23,15 @@ internal static class ConfigureHealthCheck
         app.UseRouting();
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapHealthChecks(ReadinessProbeUrl, new HealthCheckOptions
-            {
-                Predicate = r => !r.Name.Contains(LivenessProbeName),
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            }).ShortCircuit();
+            endpoints.MapHealthChecks(ReadinessProbeUrl,
+                new HealthCheckOptions
+                {
+                    Predicate = r => !r.Name.Contains(LivenessProbeName),
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                }).ShortCircuit();
             
-            endpoints.MapHealthChecks(LivenessProbeUrl, new HealthCheckOptions 
-            {        
-                Predicate = r => r.Name.Contains(LivenessProbeName)
-            }).ShortCircuit();
+            endpoints.MapHealthChecks(LivenessProbeUrl,
+                new HealthCheckOptions { Predicate = r => r.Name.Contains(LivenessProbeName) }).ShortCircuit();
         });
         
         return app;

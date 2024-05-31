@@ -15,10 +15,7 @@ internal sealed class CreateMeteorologist(ForecastDbContext dbContext) : Endpoin
         Post("/meteorologists/random");
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
         AllowAnonymous();
-        Summary(s =>
-        {
-            s.Summary = "generate a random meteorologist";
-        });
+        Summary(s => { s.Summary = "generate a random meteorologist"; });
     }
     
     public override async Task HandleAsync(CancellationToken ct)
@@ -30,7 +27,8 @@ internal sealed class CreateMeteorologist(ForecastDbContext dbContext) : Endpoin
         await dbContext.Set<Meteorologist>().AddAsync(meteorologist, ct);
         await dbContext.SaveChangesAsync(ct);
         
-        await SendCreatedAtAsync<GetMeteorologist>(new { Id = (Guid)meteorologist.Id }, meteorologist.ToResponse(), cancellation: ct);
+        await SendCreatedAtAsync<GetMeteorologist>(new { Id = (Guid)meteorologist.Id }, meteorologist.ToResponse(),
+            cancellation: ct);
     }
     
     private static (Name name, BirthDate birthdate) CreateFakeData()
@@ -38,7 +36,8 @@ internal sealed class CreateMeteorologist(ForecastDbContext dbContext) : Endpoin
         var faker = new Faker();
         var name = new Name(faker.Name.FirstName(), faker.Name.LastName());
         
-        var date = faker.Date.PastDateOnly(70, DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().Date.AddYears(-20)));
+        var date = faker.Date.PastDateOnly(70,
+            DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().Date.AddYears(-20)));
         
         TimeOnly? hour = Random.Shared.Next(10) == 5
             ? faker.Date.BetweenTimeOnly(TimeOnly.MinValue, TimeOnly.MaxValue)

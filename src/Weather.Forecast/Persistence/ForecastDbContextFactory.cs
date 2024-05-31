@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Weather.Forecast.Persistence;
 
-internal class ForecastDbContextFactory: IDesignTimeDbContextFactory<ForecastDbContext>
+internal class ForecastDbContextFactory : IDesignTimeDbContextFactory<ForecastDbContext>
 {
     public ForecastDbContext CreateDbContext(string[] args)
     {

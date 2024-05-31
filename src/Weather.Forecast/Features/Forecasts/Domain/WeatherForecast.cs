@@ -15,14 +15,13 @@ internal sealed class WeatherForecast : Entity<WeatherForecastId>, IAggregateRoo
         AddDomainEvent(new WeatherForecastCreated(summary, meteorologistId));
     }
     
-    internal static WeatherForecast Create(DateOnly date, Temperature temperature, Summary? summary, MeteorologistId? meteorologistId = null)
-    {
-        return new WeatherForecast(date, temperature, summary, meteorologistId == Guid.Empty ? null : meteorologistId);
-    } 
-    
     public DateOnly Date { get; private set; }
     public Temperature Temperature { get; private set; }
     public Summary? Summary { get; private set; }
     
     public MeteorologistId? MeteorologistId { get; private set; }
+    
+    internal static WeatherForecast Create(DateOnly date, Temperature temperature, Summary? summary,
+        MeteorologistId? meteorologistId = null) =>
+        new(date, temperature, summary, meteorologistId == Guid.Empty ? null : meteorologistId);
 }

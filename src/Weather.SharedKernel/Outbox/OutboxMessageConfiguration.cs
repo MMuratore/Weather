@@ -11,7 +11,7 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
         
         builder.Property(x => x.Type).HasMaxLength(1000);
         builder.Property(x => x.Content).HasMaxLength(1000);
-
+        
         builder.Property(x => x.Exception).HasMaxLength(1000);
     }
 }

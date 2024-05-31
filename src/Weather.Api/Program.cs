@@ -1,8 +1,8 @@
 using System.Reflection;
 using Weather.Api.Configuration.FastEndpoint;
-using Weather.Api.Configuration.Observability;
 using Weather.Api.Configuration.HealthCheck;
 using Weather.Api.Configuration.Localization;
+using Weather.Api.Configuration.Observability;
 using Weather.Forecast;
 using Weather.Notification;
 using Weather.SharedKernel.Persistence;

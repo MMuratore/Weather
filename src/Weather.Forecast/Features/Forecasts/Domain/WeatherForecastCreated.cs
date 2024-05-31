@@ -7,9 +7,6 @@ internal sealed record WeatherForecastCreated(Summary? Summary, MeteorologistId?
 
 internal static class WeatherForecastCreatedMapper
 {
-    public static Contract.WeatherForecastCreated ToIntegrationEvent(
-        this WeatherForecastCreated @event)
-    {
-        return new Contract.WeatherForecastCreated(@event.Summary?.ToString());
-    }
+    public static Contract.WeatherForecastCreated ToIntegrationEvent(this WeatherForecastCreated @event) =>
+        new(@event.Summary?.ToString());
 }

@@ -9,10 +9,7 @@ public sealed class PublishDomainEventsInterceptor : SaveChangesInterceptor
 {
     private readonly IPublisher _publisher;
     
-    public PublishDomainEventsInterceptor(IPublisher publisher)
-    {
-        _publisher = publisher;
-    }
+    public PublishDomainEventsInterceptor(IPublisher publisher) => _publisher = publisher;
     
     
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,

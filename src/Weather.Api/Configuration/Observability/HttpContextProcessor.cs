@@ -8,7 +8,7 @@ internal sealed class HttpContextProcessor(IHttpContextAccessor httpContextAcces
     public override void OnStart(Activity data)
     {
         var username = httpContextAccessor.HttpContext?.User.Identity?.Name;
-        if(username is not null) data.SetTag(nameof(username), username);
+        if (username is not null) data.SetTag(nameof(username), username);
         
         base.OnStart(data);
     }

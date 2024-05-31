@@ -30,10 +30,7 @@ internal sealed class Meteorologist : Entity<MeteorologistId>, IAggregateRoot
         _ => Prestige.Expert
     };
     
-    internal static Meteorologist Create(Name name, BirthDate birthDate)
-    {
-        return new Meteorologist(name, birthDate);
-    }
+    internal static Meteorologist Create(Name name, BirthDate birthDate) => new(name, birthDate);
     
     internal void IncrementForecast()
     {

@@ -15,10 +15,10 @@ internal static class ConfigureObservability
             logging.IncludeScopes = true;
             logging.AddOtlpExporter();
         });
-
+        
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(c => c.AddService(
-                serviceName: builder.Environment.ApplicationName, 
+                builder.Environment.ApplicationName,
                 serviceVersion: typeof(Program).Assembly.GetName().Version?.ToString() ?? "unknown",
                 serviceInstanceId: Environment.MachineName))
             .WithTracing(tracing =>

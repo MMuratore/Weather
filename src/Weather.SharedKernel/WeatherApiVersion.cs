@@ -6,6 +6,6 @@ public static class WeatherApiVersion
 {
     public const string Name = "Weather.Api";
     public const string RequiredApiVersionHeaderName = "x-api-version";
-
-    public static readonly ApiVersion DefaultApiVersion = new (1, 0);
+    
+    public static readonly ApiVersion DefaultApiVersion = new(1, 0);
 }

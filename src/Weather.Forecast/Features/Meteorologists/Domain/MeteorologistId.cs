@@ -9,6 +9,7 @@ internal readonly record struct MeteorologistId
     public static MeteorologistId Empty => new(Guid.Empty);
     public static MeteorologistId NewWeatherForecastId => new(Guid.NewGuid());
     
-    public static implicit operator MeteorologistId(Guid d) => new (d);
+    public static implicit operator MeteorologistId(Guid d) => new(d);
+    
     public static explicit operator Guid(MeteorologistId d) => d._value;
 }

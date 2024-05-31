@@ -18,10 +18,7 @@ internal sealed class CreateForecast(ForecastFactory factory, ForecastDbContext 
         Post("/forecasts/random");
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
         AllowAnonymous();
-        Summary(s =>
-        {
-            s.Summary = "generate a random forecast";
-        });
+        Summary(s => { s.Summary = "generate a random forecast"; });
     }
     
     public override async Task HandleAsync(CancellationToken ct)
@@ -33,6 +30,7 @@ internal sealed class CreateForecast(ForecastFactory factory, ForecastDbContext 
         await dbContext.Set<WeatherForecast>().AddAsync(weatherForecast, ct);
         await dbContext.SaveChangesAsync(ct);
         
-        await SendCreatedAtAsync<GetForecast>(new { Id = (Guid)weatherForecast.Id }, weatherForecast.ToResponse(meteorologist?.ToResponse()), cancellation: ct);
+        await SendCreatedAtAsync<GetForecast>(new { Id = (Guid)weatherForecast.Id },
+            weatherForecast.ToResponse(meteorologist?.ToResponse()), cancellation: ct);
     }
 }

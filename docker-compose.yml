@@ -20,7 +20,7 @@
       - "traefik.http.services.weather.loadbalancer.server.port=8080"
       - "traefik.http.routers.weather.rule=Host(`weather.docker.localhost`)"
       - "traefik.http.routers.weather.tls=true"
-    
+  
   traefik:
     image: traefik:v2.11
     profiles:
@@ -65,7 +65,7 @@
     volumes:
       - postgres:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U exampleuser"]
+      test: [ "CMD-SHELL", "pg_isready -U exampleuser" ]
       interval: 30s
       timeout: 10s
       retries: 5

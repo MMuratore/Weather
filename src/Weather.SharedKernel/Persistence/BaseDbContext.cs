@@ -7,17 +7,12 @@ public abstract class BaseDbContext(DbContextOptions options) : DbContext(option
     private readonly PublishDomainEventsInterceptor? _domainEventsInterceptor;
     
     protected BaseDbContext(DbContextOptions options,
-        PublishDomainEventsInterceptor? domainEventsInterceptor) : this(options)
-    {
+        PublishDomainEventsInterceptor? domainEventsInterceptor) : this(options) =>
         _domainEventsInterceptor = domainEventsInterceptor;
-    }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (_domainEventsInterceptor is not null)
-        {
-            optionsBuilder.AddInterceptors(_domainEventsInterceptor);
-        }
+        if (_domainEventsInterceptor is not null) optionsBuilder.AddInterceptors(_domainEventsInterceptor);
     }
     
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

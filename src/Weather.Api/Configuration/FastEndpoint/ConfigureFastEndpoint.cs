@@ -4,7 +4,7 @@ using Asp.Versioning;
 using FastEndpoints;
 using FastEndpoints.AspVersioning;
 using FastEndpoints.Swagger;
-using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.Mvc;
 using Weather.SharedKernel;
 
 namespace Weather.Api.Configuration.FastEndpoint;
@@ -23,22 +23,22 @@ internal static class ConfigureFastEndpoint
         {
             options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
-        builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+        builder.Services.Configure<JsonOptions>(options =>
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
         
         VersionSets.CreateApi(WeatherApiVersion.Name, v => v.HasApiVersion(WeatherApiVersion.DefaultApiVersion));
         
-        builder.Services.Configure<JsonOptions>(o =>
+        builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(o =>
             o.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
         
         builder.Services.AddVersioning(o =>
-            {
-                o.DefaultApiVersion = WeatherApiVersion.DefaultApiVersion;
-                o.AssumeDefaultVersionWhenUnspecified = true;
-                o.ApiVersionReader = new HeaderApiVersionReader(WeatherApiVersion.RequiredApiVersionHeaderName);
-            });
+        {
+            o.DefaultApiVersion = WeatherApiVersion.DefaultApiVersion;
+            o.AssumeDefaultVersionWhenUnspecified = true;
+            o.ApiVersionReader = new HeaderApiVersionReader(WeatherApiVersion.RequiredApiVersionHeaderName);
+        });
         
         builder.Services.SwaggerDocument(o =>
         {
@@ -64,10 +64,7 @@ internal static class ConfigureFastEndpoint
             o.Errors.UseProblemDetails();
         });
         
-        if (app.Environment.IsProduction())
-        {
-            return app;
-        }
+        if (app.Environment.IsProduction()) return app;
         
         app.UseSwaggerGen();
         

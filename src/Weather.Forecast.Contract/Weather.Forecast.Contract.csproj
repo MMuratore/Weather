@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+        <PackageReference Include="MediatR.Contracts" Version="2.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Weather.SharedKernel\Weather.SharedKernel.csproj" />
+        <ProjectReference Include="..\Weather.SharedKernel\Weather.SharedKernel.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿namespace Weather.SharedKernel.Domain;
 
 public abstract class Entity<TId> : IHasDomainEvents
-    where TId: struct
+    where TId : struct
 {
     private readonly List<IDomainEvent> _domainEvents = [];
     
@@ -9,7 +9,13 @@ public abstract class Entity<TId> : IHasDomainEvents
     
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
     
-    public void ClearDomainEvents() => _domainEvents.Clear();
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
+    }
     
-    protected void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
+    protected void AddDomainEvent(IDomainEvent domainEvent)
+    {
+        _domainEvents.Add(domainEvent);
+    }
 }

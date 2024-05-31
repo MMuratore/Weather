@@ -12,7 +12,7 @@ using Weather.SharedKernel;
 
 namespace Weather.Forecast.Features.Forecasts.Endpoint;
 
-internal sealed class GetRandomForecast(ILogger<GetRandomForecast> logger, ForecastDbContext dbContext) : 
+internal sealed class GetRandomForecast(ILogger<GetRandomForecast> logger, ForecastDbContext dbContext) :
     EndpointWithoutRequest<Results<Ok<List<ForecastResponse>>, ProblemDetails>>
 {
     public override void Configure()
@@ -20,10 +20,7 @@ internal sealed class GetRandomForecast(ILogger<GetRandomForecast> logger, Forec
         Get("/forecasts/random");
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
         AllowAnonymous();
-        Summary(s =>
-        {
-            s.Summary = "get a random number of forecast data order by date";
-        });
+        Summary(s => { s.Summary = "get a random number of forecast data order by date"; });
     }
     
     public override async Task<Results<Ok<List<ForecastResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
@@ -35,12 +32,9 @@ internal sealed class GetRandomForecast(ILogger<GetRandomForecast> logger, Forec
             .Take(Random.Shared.Next(20))
             .ToListAsync(ct);
         
-        logger.LogInformation("Retrieve {forecastCount} forecast data : '{@forecasts}'", forecasts.Count, forecasts.Select(x => new
-        {
-            x.Summary,
-            x.Temperature.Celsius
-        }));
+        logger.LogInformation("Retrieve {forecastCount} forecast data : '{@forecasts}'", forecasts.Count,
+            forecasts.Select(x => new { x.Summary, x.Temperature.Celsius }));
         
-        return TypedResults.Ok(forecasts.OrderBy(x => x.Date).Select(x => x.ToResponse()).ToList());    
+        return TypedResults.Ok(forecasts.OrderBy(x => x.Date).Select(x => x.ToResponse()).ToList());
     }
 }

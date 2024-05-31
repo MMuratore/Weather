@@ -7,17 +7,15 @@ using Weather.SharedKernel;
 
 namespace Weather.Forecast.Features.Meteorologists.Endpoint;
 
-internal sealed class GetMeteorologist(ForecastDbContext dbContext) : Endpoint<GetMeteorologistRequest, MeteorologistResponse>
+internal sealed class GetMeteorologist(ForecastDbContext dbContext)
+    : Endpoint<GetMeteorologistRequest, MeteorologistResponse>
 {
     public override void Configure()
     {
         Get("/meteorologists/{id:guid}");
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
         AllowAnonymous();
-        Summary(s =>
-        {
-            s.Summary = "get a meteorologist by id";
-        });
+        Summary(s => { s.Summary = "get a meteorologist by id"; });
     }
     
     public override Task HandleAsync(GetMeteorologistRequest req, CancellationToken ct)
@@ -32,11 +30,8 @@ internal sealed record MeteorologistResponse(string Fullname, int Age, Prestige 
 
 internal static class MeteorologistResponseMapper
 {
-    public static MeteorologistResponse ToResponse(
-        this Meteorologist model)
-    {
-        return new MeteorologistResponse(model.Name.Fullname, model.BirthDay.Age, model.Prestige);
-    }
+    public static MeteorologistResponse ToResponse(this Meteorologist model) =>
+        new(model.Name.Fullname, model.BirthDay.Age, model.Prestige);
 }
 
 internal sealed record GetMeteorologistRequest

@@ -7,7 +7,11 @@ using Weather.Forecast.Persistence;
 
 namespace Weather.Forecast.Features.Forecasts;
 
-internal sealed class ForecastSeederHostedService(ILogger<ForecastSeederHostedService> logger, IServiceProvider provider, ForecastSeedHealthCheck forecastSeedHealthCheck, ForecastFactory forecastFactory) : BackgroundService
+internal sealed class ForecastSeederHostedService(
+    ILogger<ForecastSeederHostedService> logger,
+    IServiceProvider provider,
+    ForecastSeedHealthCheck forecastSeedHealthCheck,
+    ForecastFactory forecastFactory) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -17,7 +21,7 @@ internal sealed class ForecastSeederHostedService(ILogger<ForecastSeederHostedSe
         dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
         dbContext.Database.AutoSavepointsEnabled = false;
         dbContext.Database.AutoTransactionBehavior = AutoTransactionBehavior.Never;
-
+        
         while (dbContext.Set<WeatherForecast>().Count() < 1000000)
         {
             logger.LogInformation("Database forecast seeder start");
@@ -25,7 +29,7 @@ internal sealed class ForecastSeederHostedService(ILogger<ForecastSeederHostedSe
             for (var i = 0; i < 100; i++)
             {
                 var forecasts = forecastFactory.Create(10000);
-
+                
                 await dbContext.Set<WeatherForecast>().AddRangeAsync(forecasts, stoppingToken);
                 await dbContext.SaveChangesAsync(stoppingToken);
             }

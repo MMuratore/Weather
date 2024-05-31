@@ -4,20 +4,20 @@
         <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
 
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.2.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="MediatR" Version="12.2.0"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Weather.Forecast.Contract\Weather.Forecast.Contract.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Weather.Forecast.Contract\Weather.Forecast.Contract.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Weather.Forecast.Contract\Weather.Forecast.Contract.csproj" />
-  </ItemGroup>
-  
+    <ItemGroup>
+        <ProjectReference Include="..\Weather.Forecast.Contract\Weather.Forecast.Contract.csproj"/>
+    </ItemGroup>
+
 </Project>

@@ -11,7 +11,8 @@ namespace Weather.SharedKernel.Outbox;
 
 public sealed class OutboxMessageProcessor<TDbContext>(
     ILogger<OutboxMessageProcessor<TDbContext>> logger,
-    IServiceProvider serviceProvider, IOptions<OutboxMessageProcessorOptions> options)
+    IServiceProvider serviceProvider,
+    IOptions<OutboxMessageProcessorOptions> options)
     : BackgroundService
     where TDbContext : BaseDbContext
 {
@@ -19,20 +20,19 @@ public sealed class OutboxMessageProcessor<TDbContext>(
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation("{DbContextName} Outbox Message Processor Hosted Service running.", typeof(TDbContext).Name);
-
+        logger.LogInformation("{DbContextName} Outbox Message Processor Hosted Service running.",
+            typeof(TDbContext).Name);
+        
         using PeriodicTimer timer = new(Options.Period);
         
         try
         {
-            while (await timer.WaitForNextTickAsync(stoppingToken))
-            {
-                await PublishIntegrationEventAsync(stoppingToken);
-            }
+            while (await timer.WaitForNextTickAsync(stoppingToken)) await PublishIntegrationEventAsync(stoppingToken);
         }
         catch (OperationCanceledException)
         {
-            logger.LogInformation("{DbContextName} Outbox Message Processor Hosted Service is stopping.", typeof(TDbContext).Name);
+            logger.LogInformation("{DbContextName} Outbox Message Processor Hosted Service is stopping.",
+                typeof(TDbContext).Name);
         }
     }
     
@@ -42,10 +42,10 @@ public sealed class OutboxMessageProcessor<TDbContext>(
         var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
         var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
         
-        var messages = await dbContext.Set<OutboxMessage>().Where(x => x.CompleteTime == null).OrderBy(x => x.CreationTime).Take(Options.MaximumConcurrentMessage).ToListAsync(cancellationToken: stoppingToken);
+        var messages = await dbContext.Set<OutboxMessage>().Where(x => x.CompleteTime == null)
+            .OrderBy(x => x.CreationTime).Take(Options.MaximumConcurrentMessage).ToListAsync(stoppingToken);
         
         foreach (var message in messages)
-        {
             try
             {
                 var type = Type.GetType(message.Type);
@@ -59,7 +59,9 @@ public sealed class OutboxMessageProcessor<TDbContext>(
                 
                 if (integrationEvent == null)
                 {
-                    logger.LogError("An error occurred during deserialization. Integration Event Id: '{IntegrationEventId}'", message.Id);
+                    logger.LogError(
+                        "An error occurred during deserialization. Integration Event Id: '{IntegrationEventId}'",
+                        message.Id);
                     continue;
                 }
                 
@@ -67,14 +69,13 @@ public sealed class OutboxMessageProcessor<TDbContext>(
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, $"An error occurred processing domain event messages.");
+                logger.LogError(ex, "An error occurred processing domain event messages.");
                 message.Exception = ex.Message;
             }
             finally
             {
                 message.CompleteTime = DateTime.UtcNow;
             }
-        }
         
         await dbContext.SaveChangesAsync(stoppingToken);
     }
