@@ -12,8 +12,8 @@
 
     <ItemGroup>
         <PackageReference Include="Bogus" Version="35.5.1"/>
-        <PackageReference Include="FastEndpoints" Version="5.26.0" />
-        <PackageReference Include="FastEndpoints.AspVersioning" Version="5.26.0" />
+        <PackageReference Include="FastEndpoints" Version="5.26.0"/>
+        <PackageReference Include="FastEndpoints.AspVersioning" Version="5.26.0"/>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
     </ItemGroup>
 
@@ -26,4 +26,8 @@
         <Folder Include="Features\"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <InternalsVisibleTo Include="$(AssemblyName).Domain.Test"/>
+        <InternalsVisibleTo Include="$(AssemblyName).Integration.Test"/>
+    </ItemGroup>
 </Project>
