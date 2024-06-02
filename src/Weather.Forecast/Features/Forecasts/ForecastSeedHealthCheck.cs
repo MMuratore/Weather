@@ -16,5 +16,5 @@ internal sealed class ForecastSeedHealthCheck : IHealthCheck
         HealthCheckContext context, CancellationToken cancellationToken = default) =>
         Task.FromResult(SeedCompleted
             ? HealthCheckResult.Healthy("The forecast seeding task has completed.")
-            : HealthCheckResult.Unhealthy("That forecast seeding task is still running."));
+            : HealthCheckResult.Degraded("That forecast seeding task is still running."));
 }

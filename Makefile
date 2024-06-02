@@ -1,7 +1,6 @@
 USER_PATH=$(shell powershell -Command "[Environment]::GetFolderPath('UserProfile')")
 
 install:
-	dotnet tool install --global dotnet-ef
 	dotnet tool update --global dotnet-ef
 	choco install mkcert
 	mkcert -install
