@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>2a6ca895-690c-4a46-a359-c9602729ce60</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>

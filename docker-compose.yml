@@ -10,6 +10,8 @@
       ASPNETCORE_ENVIRONMENT: Development
       OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
       OTEL_EXPORTER_OTLP_HEADERS: x-otlp-api-key=${OTLP_PRIMARYAPIKEY}
+    volumes:
+      - $APPDATA/Microsoft/UserSecrets/2a6ca895-690c-4a46-a359-c9602729ce60:/home/app/.microsoft/usersecrets/2a6ca895-690c-4a46-a359-c9602729ce60
     deploy:
       mode: replicated
       replicas: 1
@@ -82,8 +84,6 @@
     profiles:
       - infra
     build: ./.keycloak
-    volumes:
-      - ./.keycloak/realm-config/:/opt/keycloak/data/import/
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
@@ -93,7 +93,10 @@
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       KC_DB_URL_DATABASE: ${DB_NAME}
       KC_DB_SCHEMA: keycloak
-    command: start-dev --import-realm --proxy=edge
+      KC_PROXY: edge
+    command: start-dev --import-realm
+    volumes:
+      - ./.keycloak/realm-config/:/opt/keycloak/data/import/
     depends_on:
       postgres:
         condition: service_healthy
