@@ -5,6 +5,9 @@ using FastEndpoints;
 using FastEndpoints.AspVersioning;
 using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using NSwag;
+using NSwag.AspNetCore;
 using Weather.SharedKernel;
 
 namespace Weather.Api.Configuration.FastEndpoint;
@@ -15,8 +18,6 @@ internal static class ConfigureFastEndpoint
     
     internal static WebApplicationBuilder AddFastEndpoint(this WebApplicationBuilder builder)
     {
-        builder.Services.AddAuthentication();
-        builder.Services.AddAuthorization();
         builder.Services.AddFastEndpoints();
         
         builder.Services.ConfigureHttpJsonOptions(options =>
@@ -40,15 +41,36 @@ internal static class ConfigureFastEndpoint
             o.ApiVersionReader = new HeaderApiVersionReader(WeatherApiVersion.RequiredApiVersionHeaderName);
         });
         
+        var options = new SwaggerOAuthOptions();
+        var section = builder.Configuration.GetSection(SwaggerOAuthOptions.Section);
+        section.Bind(options);
+        builder.Services.Configure<SwaggerOAuthOptions>(section);
+        
         builder.Services.SwaggerDocument(o =>
         {
+            o.EnableJWTBearerAuth = false;
+            o.AutoTagPathSegmentIndex = 0;
+
             o.DocumentSettings = s =>
             {
                 s.DocumentName = "v1";
                 s.Title = "Weather API";
                 s.ApiVersion(WeatherApiVersion.DefaultApiVersion);
+                s.AddAuth("oidc", new OpenApiSecurityScheme
+                {
+                    Type = OpenApiSecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        AuthorizationCode = new OpenApiOAuthFlow
+                        {
+                            AuthorizationUrl = options.AuthorizationUrl,
+                            TokenUrl = options.TokenUrl,
+                            RefreshUrl = options.TokenUrl,
+                            Scopes = options.Scopes.ToDictionary(x => x, x => x)
+                        }
+                    }
+                });
             };
-            o.AutoTagPathSegmentIndex = 0;
         });
         
         return builder;
@@ -56,8 +78,7 @@ internal static class ConfigureFastEndpoint
     
     internal static IApplicationBuilder UseFastEndpoint(this WebApplication app)
     {
-        app.UseAuthentication().UseAuthorization();
-        
+        var options = app.Services.GetRequiredService<IOptions<SwaggerOAuthOptions>>().Value;
         app.UseFastEndpoints(o =>
         {
             o.Endpoints.RoutePrefix = DefaultRoutePrefix;
@@ -66,7 +87,14 @@ internal static class ConfigureFastEndpoint
         
         if (app.Environment.IsProduction()) return app;
         
-        app.UseSwaggerGen();
+        app.UseSwaggerGen(uiConfig: o =>
+        {
+            o.OAuth2Client = new OAuth2ClientSettings
+            {
+                ClientId = options.ClientId,
+                ClientSecret = options.ClientSecret
+            };
+        });
         
         app.MapGet("/", context =>
         {

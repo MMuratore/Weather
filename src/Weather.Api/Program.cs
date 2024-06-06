@@ -3,6 +3,7 @@ using Weather.Api.Configuration.FastEndpoint;
 using Weather.Api.Configuration.HealthCheck;
 using Weather.Api.Configuration.Localization;
 using Weather.Api.Configuration.Observability;
+using Weather.Api.Configuration.Security;
 using Weather.Forecast;
 using Weather.Notification;
 using Weather.SharedKernel.Persistence;
@@ -11,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddObservability();
 builder.AddHealthChecks();
+builder.AddAuthentication();
+builder.AddAuthorization();
 builder.AddFastEndpoint();
 builder.AddLocalization();
 
@@ -24,6 +27,8 @@ var app = builder.Build();
 
 app.UseRequestLocalization();
 app.UseHealthChecks();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseFastEndpoint();
 
 app.Run();
