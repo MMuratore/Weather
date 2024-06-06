@@ -14,7 +14,6 @@ internal sealed class GetMeteorologist(ForecastDbContext dbContext)
     {
         Get("/meteorologists/{id:guid}");
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
-        AllowAnonymous();
         Summary(s => { s.Summary = "get a meteorologist by id"; });
     }
     

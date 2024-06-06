@@ -626,21 +626,21 @@
     "clientAuthenticatorType" : "client-secret",
     "secret" : "ejuN7gI1QGp7GLzM4YwQBf0ltGW8tA1E",
     "redirectUris" : [ "https://weather.docker.localhost/swagger/oauth2-redirect.html" ],
-    "webOrigins" : [ "+" ],
+    "webOrigins" : [ "https://weather.docker.localhost" ],
     "notBefore" : 0,
     "bearerOnly" : false,
     "consentRequired" : false,
     "standardFlowEnabled" : true,
     "implicitFlowEnabled" : false,
-    "directAccessGrantsEnabled" : true,
+    "directAccessGrantsEnabled" : false,
     "serviceAccountsEnabled" : false,
     "publicClient" : false,
     "frontchannelLogout" : true,
     "protocol" : "openid-connect",
     "attributes" : {
       "client.secret.creation.time" : "1717603311",
-      "post.logout.redirect.uris" : "+",
       "oauth2.device.authorization.grant.enabled" : "false",
+      "use.jwks.url" : "false",
       "backchannel.logout.revoke.offline.tokens" : "false",
       "use.refresh.tokens" : "true",
       "oidc.ciba.grant.enabled" : "false",
@@ -656,8 +656,22 @@
     "authenticationFlowBindingOverrides" : { },
     "fullScopeAllowed" : true,
     "nodeReRegistrationTimeout" : -1,
-    "defaultClientScopes" : [ "web-origins", "acr", "roles", "profile", "email" ],
-    "optionalClientScopes" : [ "address", "phone", "offline_access", "microprofile-jwt" ]
+    "protocolMappers" : [ {
+      "id" : "45a5fa30-ecb7-4a59-ab56-4f7d7c48a57a",
+      "name" : "swagger",
+      "protocol" : "openid-connect",
+      "protocolMapper" : "oidc-audience-mapper",
+      "consentRequired" : false,
+      "config" : {
+        "included.client.audience" : "swagger",
+        "id.token.claim" : "false",
+        "lightweight.claim" : "false",
+        "introspection.token.claim" : "true",
+        "access.token.claim" : "true"
+      }
+    } ],
+    "defaultClientScopes" : [ "web-origins", "acr" ],
+    "optionalClientScopes" : [ "address", "phone", "roles", "profile", "offline_access", "microprofile-jwt", "email" ]
   } ],
   "clientScopes" : [ {
     "id" : "85e9332a-21c9-4750-946e-869b9ad60481",

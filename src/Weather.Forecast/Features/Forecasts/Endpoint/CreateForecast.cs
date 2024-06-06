@@ -17,7 +17,6 @@ internal sealed class CreateForecast(ForecastFactory factory, ForecastDbContext 
     {
         Post("/forecasts/random");
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
-        AllowAnonymous();
         Summary(s => { s.Summary = "generate a random forecast"; });
     }
     

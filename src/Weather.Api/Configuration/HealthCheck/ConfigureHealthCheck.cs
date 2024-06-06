@@ -20,7 +20,6 @@ internal static class ConfigureHealthCheck
     
     internal static IApplicationBuilder UseHealthChecks(this IApplicationBuilder app)
     {
-        app.UseRouting();
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapHealthChecks(ReadinessProbeUrl,

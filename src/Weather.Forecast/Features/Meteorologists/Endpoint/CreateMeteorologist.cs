@@ -14,7 +14,6 @@ internal sealed class CreateMeteorologist(ForecastDbContext dbContext) : Endpoin
     {
         Post("/meteorologists/random");
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
-        AllowAnonymous();
         Summary(s => { s.Summary = "generate a random meteorologist"; });
     }
     
