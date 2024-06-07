@@ -21,4 +21,4 @@ prune:
 	
 export-realm:
 	docker compose exec -u root keycloak sh /opt/keycloak/bin/kc.sh export --dir /opt/keycloak/export --users realm_file
-	docker compose cp keycloak:opt/keycloak/export/. ./.keycloak/realm-config
+	docker compose cp keycloak:opt/keycloak/export/. ./.local/.keycloak/realm-config

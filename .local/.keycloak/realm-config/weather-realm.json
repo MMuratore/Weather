@@ -379,21 +379,21 @@
   "webAuthnPolicyPasswordlessAcceptableAaguids" : [ ],
   "webAuthnPolicyPasswordlessExtraOrigins" : [ ],
   "users" : [ {
-    "id" : "546cdb66-07af-46f2-a0fe-255cba25918c",
+    "id" : "f254bfce-7071-41fd-b53b-95850ade8aa0",
     "username" : "admin",
     "firstName" : "Johnny",
     "lastName" : "Doen",
     "email" : "admin@eonix.be",
     "emailVerified" : true,
-    "createdTimestamp" : 1717651885915,
+    "createdTimestamp" : 1717789410603,
     "enabled" : true,
     "totp" : false,
     "credentials" : [ {
-      "id" : "9b5d18e1-c301-4bed-bbf1-dfd358a3a730",
+      "id" : "28354ae1-d383-49f1-90f8-4e5964a10f44",
       "type" : "password",
       "userLabel" : "My password",
-      "createdDate" : 1717651898395,
-      "secretData" : "{\"value\":\"tQyksHqnnjfAGZC9tt9PuGI0XIj/t7LvxR4dE2JugX06iTEVECdx8i9XGiQ5zon4+xHceun0gEZfQFzUGG/PoQ==\",\"salt\":\"10y9vfKAQ7CqdocTYETqAQ==\",\"additionalParameters\":{}}",
+      "createdDate" : 1717789423263,
+      "secretData" : "{\"value\":\"qyfzmQuT+NgQyUNdN+U2QBGda7zRQpdn4RGjfL2Gu9KFxPvKbAtFLBBZ12Xtnu9tL06BN8M4SA/7O927zUeTDg==\",\"salt\":\"mLvmA5S/hVb8ZaqJoA5JqQ==\",\"additionalParameters\":{}}",
       "credentialData" : "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
     } ],
     "disableableCredentialTypes" : [ ],
@@ -615,7 +615,7 @@
   }, {
     "id" : "5be63131-7ff0-4fe8-9f66-e8ba9ff4d89d",
     "clientId" : "swagger",
-    "name" : "${client_swagger}",
+    "name" : "",
     "description" : "",
     "rootUrl" : "",
     "adminUrl" : "",
@@ -624,7 +624,6 @@
     "enabled" : true,
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
-    "secret" : "ejuN7gI1QGp7GLzM4YwQBf0ltGW8tA1E",
     "redirectUris" : [ "https://weather.docker.localhost/swagger/oauth2-redirect.html" ],
     "webOrigins" : [ "https://weather.docker.localhost" ],
     "notBefore" : 0,
@@ -634,11 +633,12 @@
     "implicitFlowEnabled" : false,
     "directAccessGrantsEnabled" : false,
     "serviceAccountsEnabled" : false,
-    "publicClient" : false,
+    "publicClient" : true,
     "frontchannelLogout" : true,
     "protocol" : "openid-connect",
     "attributes" : {
-      "client.secret.creation.time" : "1717603311",
+      "client.secret.creation.time" : "1717789159",
+      "post.logout.redirect.uris" : "+",
       "oauth2.device.authorization.grant.enabled" : "false",
       "use.jwks.url" : "false",
       "backchannel.logout.revoke.offline.tokens" : "false",
@@ -664,9 +664,10 @@
       "consentRequired" : false,
       "config" : {
         "included.client.audience" : "swagger",
+        "introspection.token.claim" : "true",
+        "userinfo.token.claim" : "false",
         "id.token.claim" : "false",
         "lightweight.claim" : "false",
-        "introspection.token.claim" : "true",
         "access.token.claim" : "true"
       }
     } ],
@@ -1194,7 +1195,7 @@
       "subType" : "anonymous",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "oidc-full-name-mapper", "saml-role-list-mapper", "oidc-usermodel-property-mapper", "saml-user-property-mapper", "saml-user-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-address-mapper", "oidc-usermodel-attribute-mapper" ]
+        "allowed-protocol-mapper-types" : [ "saml-role-list-mapper", "oidc-usermodel-property-mapper", "saml-user-property-mapper", "oidc-usermodel-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-address-mapper", "saml-user-attribute-mapper", "oidc-full-name-mapper" ]
       }
     }, {
       "id" : "7db301b3-ab72-4292-a1e3-6692536be808",
@@ -1221,7 +1222,7 @@
       "subType" : "authenticated",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "oidc-full-name-mapper", "oidc-usermodel-attribute-mapper", "saml-role-list-mapper", "oidc-sha256-pairwise-sub-mapper", "saml-user-property-mapper", "oidc-address-mapper", "oidc-usermodel-property-mapper", "saml-user-attribute-mapper" ]
+        "allowed-protocol-mapper-types" : [ "oidc-usermodel-property-mapper", "oidc-address-mapper", "saml-role-list-mapper", "oidc-usermodel-attribute-mapper", "oidc-full-name-mapper", "saml-user-property-mapper", "saml-user-attribute-mapper", "oidc-sha256-pairwise-sub-mapper" ]
       }
     }, {
       "id" : "ae30858e-4aee-49e9-9a0e-83fea4037b75",
