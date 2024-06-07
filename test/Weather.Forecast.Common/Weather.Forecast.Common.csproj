@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsTestProject>false</IsTestProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Weather.Forecast\Weather.Forecast.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="Weather.Forecast.UnitTest"/>
+        <InternalsVisibleTo Include="Weather.Forecast.IntegrationTest"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Bogus" Version="35.5.1" />
+    </ItemGroup>
+    
+</Project>
