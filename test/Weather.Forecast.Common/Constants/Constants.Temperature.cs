@@ -1,6 +1,6 @@
 ﻿namespace Weather.Forecast.Common.Constants;
 
-public static partial class TestConstants
+public static class TestConstants
 {
     public static class Temperature
     {

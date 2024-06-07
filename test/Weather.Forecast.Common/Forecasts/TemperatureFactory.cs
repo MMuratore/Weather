@@ -6,12 +6,11 @@ namespace Weather.Forecast.Common.Forecasts;
 
 internal static class TemperatureFactory
 {
-    internal static Temperature Temperature(this Randomizer randomizer, decimal min = -50m, decimal max = 100m)
-    {
-        return new Temperature(randomizer.Decimal(min, max));
-    }
+    internal static Temperature Temperature(this Randomizer randomizer, decimal min = -50m, decimal max = 100m) =>
+        new(randomizer.Decimal(min, max));
     
-    internal static (Temperature, Summary) TemperatureWithSummary(this Faker faker, decimal celsius = TestConstants.Temperature.Balmy)
+    internal static (Temperature, Summary) TemperatureWithSummary(this Faker faker,
+        decimal celsius = TestConstants.Temperature.Balmy)
     {
         var summary = celsius switch
         {
@@ -33,7 +32,7 @@ internal static class TemperatureFactory
     internal static decimal TemperatureFromSummary(this Faker faker, Summary summary)
     {
         var celsius = summary switch
-        { 
+        {
             Summary.Freezing => -68,
             Summary.Bracing => -41,
             Summary.Chilly => -32,
