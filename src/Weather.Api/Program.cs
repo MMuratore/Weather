@@ -1,6 +1,4 @@
 using System.Reflection;
-using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Weather.Api.Configuration.FastEndpoint;
 using Weather.Api.Configuration.HealthCheck;
 using Weather.Api.Configuration.Localization;

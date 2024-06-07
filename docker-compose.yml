@@ -36,8 +36,8 @@
       - 5432:5432
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./.traefik/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./.traefik/config.yml:/etc/traefik/config.yml:ro
+      - ./.local/.traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./.local/.traefik/config.yml:/etc/traefik/config.yml:ro
       - ~/.ssl:/etc/traefik/ssl:ro
     labels:
       - "traefik.enable=true"
@@ -66,7 +66,7 @@
       POSTGRES_DB: ${DB_NAME}
     volumes:
       - postgres:/var/lib/postgresql/data
-      - ./.postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./.local/.postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U exampleuser" ]
       interval: 30s
@@ -83,7 +83,7 @@
     image: ${REGISTRY:-weather}/keycloak:${PLATFORM:-linux}-${TAG:-latest}
     profiles:
       - infra
-    build: ./.keycloak
+    build: ./.local/.keycloak
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
@@ -94,9 +94,12 @@
       KC_DB_URL_DATABASE: ${DB_NAME}
       KC_DB_SCHEMA: keycloak
       KC_PROXY: edge
-    command: start-dev --import-realm
+      KC_HTTP_ENABLE: true
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME: keycloak.docker.localhost
+    command: start --import-realm
     volumes:
-      - ./.keycloak/realm-config/:/opt/keycloak/data/import/
+      - ./.local/.keycloak/realm-config/:/opt/keycloak/data/import/
     depends_on:
       postgres:
         condition: service_healthy

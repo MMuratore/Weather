@@ -50,7 +50,7 @@ internal static class ConfigureFastEndpoint
         {
             o.EnableJWTBearerAuth = false;
             o.AutoTagPathSegmentIndex = 0;
-
+            
             o.DocumentSettings = s =>
             {
                 s.DocumentName = "v1";
