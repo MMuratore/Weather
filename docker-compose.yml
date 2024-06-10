@@ -25,7 +25,7 @@
       - "traefik.http.routers.weather.tls=true"
   
   traefik:
-    image: traefik:v3.0
+    image: traefik:v2.11
     profiles:
       - infra
     security_opt:
