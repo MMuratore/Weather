@@ -8,7 +8,7 @@ internal static class TemperatureFactory
 {
     internal static Temperature Temperature(this Randomizer randomizer, decimal min = -50m, decimal max = 100m) =>
         new(randomizer.Decimal(min, max));
-    
+
     internal static (Temperature, Summary) TemperatureWithSummary(this Faker faker,
         decimal celsius = TestConstants.Temperature.Balmy)
     {
@@ -25,10 +25,10 @@ internal static class TemperatureFactory
             >= 42 and < 58 => Summary.Sweltering,
             _ => Summary.Scorching
         };
-        
+
         return (new Temperature(celsius), summary);
     }
-    
+
     internal static decimal TemperatureFromSummary(this Faker faker, Summary summary)
     {
         var celsius = summary switch
@@ -45,7 +45,7 @@ internal static class TemperatureFactory
             Summary.Scorching => 61,
             _ => 100
         };
-        
+
         return celsius;
     }
 }

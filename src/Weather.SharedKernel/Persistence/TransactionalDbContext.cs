@@ -11,18 +11,18 @@ public abstract class TransactionalDbContext : BaseDbContext
         PublishDomainEventsInterceptor? domainEventsInterceptor) : base(options, domainEventsInterceptor)
     {
     }
-    
+
     protected TransactionalDbContext(DbContextOptions options) : base(options)
     {
     }
-    
+
     protected DbSet<OutboxMessage> OutboxIntegrationEvent { get; set; }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new OutboxMessageConfiguration());
     }
-    
+
     public async Task AddIntegrationEventAsync(IIntegrationEvent message, CancellationToken cancellationToken = default)
     {
         await OutboxIntegrationEvent.AddAsync(

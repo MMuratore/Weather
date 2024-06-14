@@ -4,7 +4,9 @@ install:
 	dotnet tool update --global dotnet-ef
 	choco install mkcert
 	mkcert -install
-	mkcert -cert-file $(USER_PATH)/.ssl/local-cert.pem -key-file $(USER_PATH)/.ssl/local-key.pem "docker.localhost" "*.docker.localhost"
+	@if not exist "$(USER_PATH)/.ssl" mkdir "$(USER_PATH)/.ssl"
+	mkcert -cert-file $(USER_PATH)/.ssl/local-cert.pem -key-file $(USER_PATH)/.ssl/local-key.pem "docker.internal" "*.docker.internal"
+	powershell.exe -ExecutionPolicy Bypass -File ./.local/.traefik/dns/add-hosts-entries.ps1
 
 infra:
 	docker compose --profile infra up -d --build

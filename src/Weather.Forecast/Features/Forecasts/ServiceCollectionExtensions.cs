@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
         builder.Services.AddHealthChecks().AddCheck<ForecastSeedHealthCheck>(nameof(ForecastSeedHealthCheck));
         builder.Services.AddHostedService<ForecastSeederHostedService>();
         builder.Services.AddSingleton<ForecastFactory>();
-        
+
         return builder;
     }
 }

@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
     {
         var connectionString = builder.Configuration.GetConnectionString("Forecast") ??
                                throw new ArgumentNullException(nameof(builder));
-        
+
         builder.Services.AddDbContext<ForecastDbContext>(
             options =>
             {
@@ -26,19 +26,19 @@ public static class ServiceCollectionExtensions
                 {
                     if (builder.Environment.IsProduction()) cfg.EnableRetryOnFailure();
                 });
-                
+
                 if (!builder.Environment.IsDevelopment()) return;
-                
+
                 options.ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
                 options.EnableSensitiveDataLogging();
             }, optionsLifetime: ServiceLifetime.Singleton);
-        
+
         builder.Services.AddHostedService<OutboxMessageProcessor<ForecastDbContext>>();
-        
+
         builder.AddForecastServices();
-        
+
         moduleAssemblies.Add(typeof(ServiceCollectionExtensions).Assembly);
-        
+
         return builder;
     }
 }

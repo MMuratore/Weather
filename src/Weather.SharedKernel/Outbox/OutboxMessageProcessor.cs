@@ -17,14 +17,14 @@ public sealed class OutboxMessageProcessor<TDbContext>(
     where TDbContext : BaseDbContext
 {
     private OutboxMessageProcessorOptions Options { get; } = options.Value;
-    
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         logger.LogInformation("{DbContextName} Outbox Message Processor Hosted Service running.",
             typeof(TDbContext).Name);
-        
+
         using PeriodicTimer timer = new(Options.Period);
-        
+
         try
         {
             while (await timer.WaitForNextTickAsync(stoppingToken)) await PublishIntegrationEventAsync(stoppingToken);
@@ -35,16 +35,16 @@ public sealed class OutboxMessageProcessor<TDbContext>(
                 typeof(TDbContext).Name);
         }
     }
-    
+
     private async Task PublishIntegrationEventAsync(CancellationToken stoppingToken)
     {
         using var scope = serviceProvider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
         var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
-        
+
         var messages = await dbContext.Set<OutboxMessage>().Where(x => x.CompleteTime == null)
             .OrderBy(x => x.CreationTime).Take(Options.MaximumConcurrentMessage).ToListAsync(stoppingToken);
-        
+
         foreach (var message in messages)
             try
             {
@@ -54,9 +54,9 @@ public sealed class OutboxMessageProcessor<TDbContext>(
                     logger.LogError("Type not found. Integration Event Id: '{IntegrationEventId}'", message.Id);
                     continue;
                 }
-                
+
                 var integrationEvent = JsonSerializer.Deserialize(message.Content, type);
-                
+
                 if (integrationEvent == null)
                 {
                     logger.LogError(
@@ -64,7 +64,7 @@ public sealed class OutboxMessageProcessor<TDbContext>(
                         message.Id);
                     continue;
                 }
-                
+
                 await publisher.Publish(integrationEvent, stoppingToken);
             }
             catch (Exception ex)
@@ -76,7 +76,7 @@ public sealed class OutboxMessageProcessor<TDbContext>(
             {
                 message.CompleteTime = DateTime.UtcNow;
             }
-        
+
         await dbContext.SaveChangesAsync(stoppingToken);
     }
 }

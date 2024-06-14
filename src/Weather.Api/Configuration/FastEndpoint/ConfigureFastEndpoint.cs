@@ -15,11 +15,11 @@ namespace Weather.Api.Configuration.FastEndpoint;
 internal static class ConfigureFastEndpoint
 {
     private const string DefaultRoutePrefix = "api";
-    
+
     internal static WebApplicationBuilder AddFastEndpoint(this WebApplicationBuilder builder)
     {
         builder.Services.AddFastEndpoints();
-        
+
         builder.Services.ConfigureHttpJsonOptions(options =>
         {
             options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -28,29 +28,29 @@ internal static class ConfigureFastEndpoint
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
-        
+
         VersionSets.CreateApi(WeatherApiVersion.Name, v => v.HasApiVersion(WeatherApiVersion.DefaultApiVersion));
-        
+
         builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(o =>
             o.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
-        
+
         builder.Services.AddVersioning(o =>
         {
             o.DefaultApiVersion = WeatherApiVersion.DefaultApiVersion;
             o.AssumeDefaultVersionWhenUnspecified = true;
             o.ApiVersionReader = new HeaderApiVersionReader(WeatherApiVersion.RequiredApiVersionHeaderName);
         });
-        
+
         var options = new SwaggerOAuthOptions();
         var section = builder.Configuration.GetSection(SwaggerOAuthOptions.Section);
         section.Bind(options);
         builder.Services.Configure<SwaggerOAuthOptions>(section);
-        
+
         builder.Services.SwaggerDocument(o =>
         {
             o.EnableJWTBearerAuth = false;
             o.AutoTagPathSegmentIndex = 0;
-            
+
             o.DocumentSettings = s =>
             {
                 s.DocumentName = "v1";
@@ -72,10 +72,10 @@ internal static class ConfigureFastEndpoint
                 });
             };
         });
-        
+
         return builder;
     }
-    
+
     internal static IApplicationBuilder UseFastEndpoint(this WebApplication app)
     {
         var options = app.Services.GetRequiredService<IOptions<SwaggerOAuthOptions>>().Value;
@@ -84,24 +84,23 @@ internal static class ConfigureFastEndpoint
             o.Endpoints.RoutePrefix = DefaultRoutePrefix;
             o.Errors.UseProblemDetails();
         });
-        
+
         if (app.Environment.IsProduction()) return app;
-        
+
         app.UseSwaggerGen(uiConfig: o =>
         {
             o.OAuth2Client = new OAuth2ClientSettings
             {
-                ClientId = options.ClientId,
-                ClientSecret = options.ClientSecret
+                ClientId = options.ClientId
             };
         });
-        
+
         app.MapGet("/", context =>
         {
             context.Response.Redirect("/swagger");
             return Task.CompletedTask;
         });
-        
+
         return app;
     }
 }

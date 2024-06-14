@@ -11,7 +11,7 @@ internal sealed record ForecastResponse(
 {
     /// <example>Wednesday, May 16, 2001</example>
     public string Date { get; init; } = Date;
-    
+
     public Temperature Temperature { get; init; } = Temperature;
     public Summary? Summary { get; init; } = Summary;
     public MeteorologistResponse? Meteorologist { get; init; } = Meteorologist;

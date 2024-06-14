@@ -10,7 +10,7 @@ internal static class ConfigureAuthorization
             .SetDefaultPolicy(new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build());
-        
+
         return builder;
     }
 }

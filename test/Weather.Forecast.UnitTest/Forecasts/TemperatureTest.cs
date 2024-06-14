@@ -14,20 +14,20 @@ public class TemperatureTest : BaseUnitTest
         //Arrange
         var summary = Enum.Parse<Summary>(value);
         var celsius = Faker.TemperatureFromSummary(summary);
-        
+
         //Act
         var temperature = new Temperature(celsius);
-        
+
         //Assert
         temperature.Celsius.Should().Be(celsius);
     }
-    
+
     public static TheoryData<string> ListSummary()
     {
         TheoryData<string> theoryData = [];
-        
+
         Enum.GetNames<Summary>().ToList().ForEach(theoryData.Add);
-        
+
         return theoryData;
     }
 }

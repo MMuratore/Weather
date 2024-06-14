@@ -9,7 +9,7 @@ public static class ServiceCollectionExtensions
         List<Assembly> moduleAssemblies)
     {
         moduleAssemblies.Add(typeof(ServiceCollectionExtensions).Assembly);
-        
+
         return builder;
     }
 }

@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
         builder.Services.AddScoped<PublishDomainEventsInterceptor>();
         builder.Services.Configure<OutboxMessageProcessorOptions>(
             builder.Configuration.GetRequiredSection(OutboxMessageProcessorOptions.Section));
-        
+
         return builder;
     }
 }

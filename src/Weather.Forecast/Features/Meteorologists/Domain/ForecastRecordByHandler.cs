@@ -11,12 +11,12 @@ internal sealed class ForecastRecordByHandler(ForecastDbContext dbContext)
     public async Task Handle(WeatherForecastCreated notification, CancellationToken cancellationToken)
     {
         if (notification.MeteorologistId is null) return;
-        
+
         var meteorologist = await dbContext.Set<Meteorologist>()
             .FirstOrDefaultAsync(x => x.Id == notification.MeteorologistId, cancellationToken);
-        
+
         if (meteorologist is null) throw new Exception("meteorologist not found");
-        
+
         meteorologist.IncrementForecast();
     }
 }

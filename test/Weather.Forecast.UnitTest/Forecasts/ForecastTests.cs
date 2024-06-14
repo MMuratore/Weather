@@ -13,17 +13,17 @@ public class ForecastTests : BaseUnitTest
         //Arrange
         var date = Faker.Date.PastDateOnly();
         var (temperature, summary) = Faker.TemperatureWithSummary();
-        
+
         //Act
         var forecast = WeatherForecast.Create(date, temperature, summary);
-        
+
         //Assert
         forecast.Temperature.Should().Be(temperature);
         forecast.Date.Should().Be(date);
         forecast.DomainEvents.Should().HaveCount(1);
         forecast.Summary.Should().Be(summary);
         forecast.MeteorologistId.Should().BeNull();
-        
+
         var domainEvent = forecast.DomainEvents.First();
         domainEvent.Should().BeOfType<WeatherForecastCreated>();
         var weatherForecastCreated = (WeatherForecastCreated)domainEvent;

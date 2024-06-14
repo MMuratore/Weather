@@ -14,7 +14,7 @@ internal sealed class MeteorologistConfiguration : IEntityTypeConfiguration<Mete
                 v => (Guid)v,
                 v => v)
             .ValueGeneratedOnAdd();
-        
+
         builder.ComplexProperty(x => x.Name, b =>
         {
             b.Property(x => x.Firstname).HasColumnName(nameof(Name.Firstname)).HasMaxLength(200);

@@ -21,22 +21,22 @@ internal sealed class ForecastSeederHostedService(
         dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
         dbContext.Database.AutoSavepointsEnabled = false;
         dbContext.Database.AutoTransactionBehavior = AutoTransactionBehavior.Never;
-        
+
         while (dbContext.Set<WeatherForecast>().Count() < 1000000)
         {
             logger.LogInformation("Database forecast seeder start");
-            
+
             for (var i = 0; i < 100; i++)
             {
                 var forecasts = forecastFactory.Create(10000);
-                
+
                 await dbContext.Set<WeatherForecast>().AddRangeAsync(forecasts, stoppingToken);
                 await dbContext.SaveChangesAsync(stoppingToken);
             }
-            
+
             logger.LogInformation("Database forecast seeder finished");
         }
-        
+
         forecastSeedHealthCheck.SeedCompleted = true;
     }
 }

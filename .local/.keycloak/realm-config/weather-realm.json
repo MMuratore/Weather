@@ -379,21 +379,21 @@
   "webAuthnPolicyPasswordlessAcceptableAaguids" : [ ],
   "webAuthnPolicyPasswordlessExtraOrigins" : [ ],
   "users" : [ {
-    "id" : "f254bfce-7071-41fd-b53b-95850ade8aa0",
-    "username" : "admin",
+    "id" : "7dd88616-a6e8-44f7-beec-7319bf2fc9ef",
+    "username" : "user",
     "firstName" : "Johnny",
     "lastName" : "Doen",
-    "email" : "admin@eonix.be",
-    "emailVerified" : true,
-    "createdTimestamp" : 1717789410603,
+    "email" : "user@eonix.be",
+    "emailVerified" : false,
+    "createdTimestamp" : 1718354991259,
     "enabled" : true,
     "totp" : false,
     "credentials" : [ {
-      "id" : "28354ae1-d383-49f1-90f8-4e5964a10f44",
+      "id" : "f86c9222-1b53-40ff-a7f5-5fa40ee4b024",
       "type" : "password",
       "userLabel" : "My password",
-      "createdDate" : 1717789423263,
-      "secretData" : "{\"value\":\"qyfzmQuT+NgQyUNdN+U2QBGda7zRQpdn4RGjfL2Gu9KFxPvKbAtFLBBZ12Xtnu9tL06BN8M4SA/7O927zUeTDg==\",\"salt\":\"mLvmA5S/hVb8ZaqJoA5JqQ==\",\"additionalParameters\":{}}",
+      "createdDate" : 1718355004641,
+      "secretData" : "{\"value\":\"GgXNF8/7jz+OVfGwoFSeUfCVy/xQZTG8P1/FuhsvmwutQySVFO84SpTHJF9eqT3BtGPRaor5ZbJDcl++liNG2Q==\",\"salt\":\"SSObzSyipuuccChI9yn1bQ==\",\"additionalParameters\":{}}",
       "credentialData" : "{\"hashIterations\":210000,\"algorithm\":\"pbkdf2-sha512\",\"additionalParameters\":{}}"
     } ],
     "disableableCredentialTypes" : [ ],
@@ -624,8 +624,8 @@
     "enabled" : true,
     "alwaysDisplayInConsole" : false,
     "clientAuthenticatorType" : "client-secret",
-    "redirectUris" : [ "https://weather.docker.localhost/swagger/oauth2-redirect.html" ],
-    "webOrigins" : [ "https://weather.docker.localhost" ],
+    "redirectUris" : [ "https://weather.docker.internal/swagger/oauth2-redirect.html" ],
+    "webOrigins" : [ "https://weather.docker.internal" ],
     "notBefore" : 0,
     "bearerOnly" : false,
     "consentRequired" : false,
@@ -1195,7 +1195,7 @@
       "subType" : "anonymous",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "saml-role-list-mapper", "oidc-usermodel-property-mapper", "saml-user-property-mapper", "oidc-usermodel-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-address-mapper", "saml-user-attribute-mapper", "oidc-full-name-mapper" ]
+        "allowed-protocol-mapper-types" : [ "saml-user-property-mapper", "saml-user-attribute-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-address-mapper", "saml-role-list-mapper", "oidc-full-name-mapper", "oidc-usermodel-attribute-mapper", "oidc-usermodel-property-mapper" ]
       }
     }, {
       "id" : "7db301b3-ab72-4292-a1e3-6692536be808",
@@ -1222,7 +1222,7 @@
       "subType" : "authenticated",
       "subComponents" : { },
       "config" : {
-        "allowed-protocol-mapper-types" : [ "oidc-usermodel-property-mapper", "oidc-address-mapper", "saml-role-list-mapper", "oidc-usermodel-attribute-mapper", "oidc-full-name-mapper", "saml-user-property-mapper", "saml-user-attribute-mapper", "oidc-sha256-pairwise-sub-mapper" ]
+        "allowed-protocol-mapper-types" : [ "saml-role-list-mapper", "oidc-sha256-pairwise-sub-mapper", "oidc-usermodel-property-mapper", "oidc-full-name-mapper", "saml-user-property-mapper", "oidc-usermodel-attribute-mapper", "saml-user-attribute-mapper", "oidc-address-mapper" ]
       }
     }, {
       "id" : "ae30858e-4aee-49e9-9a0e-83fea4037b75",

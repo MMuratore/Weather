@@ -15,16 +15,16 @@ internal sealed class WeatherForecastConfiguration : IEntityTypeConfiguration<We
                 v => (Guid)v,
                 v => v)
             .ValueGeneratedOnAdd();
-        
+
         builder.Property(x => x.Temperature)
             .HasConversion(
                 v => v.Celsius,
                 v => new Temperature(v))
             .HasPrecision(5, 2)
             .HasColumnName(nameof(Temperature.Celsius));
-        
+
         builder.Property(x => x.Summary).HasMaxLength(10);
-        
+
         builder.HasOne<Meteorologist>().WithMany().HasForeignKey(x => x.MeteorologistId);
     }
 }

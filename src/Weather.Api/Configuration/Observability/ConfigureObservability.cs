@@ -15,7 +15,7 @@ internal static class ConfigureObservability
             logging.IncludeScopes = true;
             logging.AddOtlpExporter();
         });
-        
+
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(c => c.AddService(
                 builder.Environment.ApplicationName,
@@ -36,7 +36,7 @@ internal static class ConfigureObservability
                 metrics.AddMeter("Microsoft.AspNetCore.Server.Kestrel");
                 metrics.AddOtlpExporter();
             });
-        
+
         return builder;
     }
 }

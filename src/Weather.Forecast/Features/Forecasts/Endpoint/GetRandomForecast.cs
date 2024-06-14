@@ -22,19 +22,19 @@ internal sealed class GetRandomForecast(ILogger<GetRandomForecast> logger, Forec
         AllowAnonymous();
         Summary(s => { s.Summary = "get a random number of forecast data order by date"; });
     }
-    
+
     public override async Task<Results<Ok<List<ForecastResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)
     {
         if (Random.Shared.Next(5) == 1) throw new Exception("Too bad...");
-        
+
         var forecasts = await dbContext.Set<WeatherForecast>()
             .OrderBy(x => Guid.NewGuid())
             .Take(Random.Shared.Next(20))
             .ToListAsync(ct);
-        
+
         logger.LogInformation("Retrieve {forecastCount} forecast data : '{@forecasts}'", forecasts.Count,
             forecasts.Select(x => new { x.Summary, x.Temperature.Celsius }));
-        
+
         return TypedResults.Ok(forecasts.OrderBy(x => x.Date).Select(x => x.ToResponse()).ToList());
     }
 }

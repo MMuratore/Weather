@@ -21,11 +21,11 @@
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.weather.loadbalancer.server.port=8080"
-      - "traefik.http.routers.weather.rule=Host(`weather.docker.localhost`)"
+      - "traefik.http.routers.weather.rule=Host(`weather.docker.internal`)"
       - "traefik.http.routers.weather.tls=true"
   
   traefik:
-    image: traefik:v3.0
+    image: traefik:v2.11
     profiles:
       - infra
     security_opt:
@@ -53,7 +53,7 @@
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.aspire.loadbalancer.server.port=18888"
-      - "traefik.http.routers.aspire.rule=Host(`aspire.docker.localhost`)"
+      - "traefik.http.routers.aspire.rule=Host(`aspire.docker.internal`)"
       - "traefik.http.routers.aspire.tls=true"
 
   postgres:
@@ -96,7 +96,7 @@
       KC_PROXY: edge
       KC_HTTP_ENABLE: true
       KC_HOSTNAME_STRICT: false
-      KC_HOSTNAME: keycloak.docker.localhost
+      KC_HOSTNAME: keycloak.docker.internal
     command: start --import-realm
     volumes:
       - ./.local/.keycloak/realm-config/:/opt/keycloak/data/import/
@@ -106,7 +106,7 @@
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
-      - "traefik.http.routers.keycloak.rule=Host(`keycloak.docker.localhost`)"
+      - "traefik.http.routers.keycloak.rule=Host(`keycloak.docker.internal`)"
       - "traefik.http.routers.keycloak.tls=true"
 
 volumes:

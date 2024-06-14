@@ -8,7 +8,7 @@ internal class ForecastDbContextFactory : IDesignTimeDbContextFactory<ForecastDb
     public ForecastDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<ForecastDbContext>();
-        
+
         return new ForecastDbContext(optionsBuilder.Options);
     }
 }

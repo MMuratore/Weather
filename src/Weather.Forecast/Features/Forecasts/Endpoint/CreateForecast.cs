@@ -19,16 +19,16 @@ internal sealed class CreateForecast(ForecastFactory factory, ForecastDbContext 
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
         Summary(s => { s.Summary = "generate a random forecast"; });
     }
-    
+
     public override async Task HandleAsync(CancellationToken ct)
     {
         var meteorologist = dbContext.Set<Meteorologist>().AsNoTracking().OrderBy(x => Guid.NewGuid()).FirstOrDefault();
-        
+
         var weatherForecast = factory.Create(meteorologistId: meteorologist?.Id).First();
-        
+
         await dbContext.Set<WeatherForecast>().AddAsync(weatherForecast, ct);
         await dbContext.SaveChangesAsync(ct);
-        
+
         await SendCreatedAtAsync<GetForecast>(new { Id = (Guid)weatherForecast.Id },
             weatherForecast.ToResponse(meteorologist?.ToResponse()), cancellation: ct);
     }

@@ -16,11 +16,11 @@ internal sealed class GetMeteorologist(ForecastDbContext dbContext)
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
         Summary(s => { s.Summary = "get a meteorologist by id"; });
     }
-    
+
     public override Task HandleAsync(GetMeteorologistRequest req, CancellationToken ct)
     {
         var meteorologist = dbContext.Set<Meteorologist>().FirstOrDefault(x => x.Id == req.Id);
-        
+
         return meteorologist is null ? SendNotFoundAsync(ct) : SendOkAsync(meteorologist.ToResponse(), ct);
     }
 }
