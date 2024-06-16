@@ -29,7 +29,7 @@ public sealed class OutboxMessageProcessor(
         if (Options.MaximumConcurrentMessage is not null) query = query.Take(Options.MaximumConcurrentMessage.Value);
 
         var messages = await query.AsNoTracking().ToListAsync(stoppingToken);
-        
+
         foreach (var message in messages)
             try
             {
@@ -61,9 +61,10 @@ public sealed class OutboxMessageProcessor(
             }
             finally
             {
-                await dbContext.OutboxIntegrationEvent.Where(x => x.Id == message.Id).ExecuteUpdateAsync(setters => setters
-                    .SetProperty(b => b.CompleteTime, DateTime.UtcNow)
-                    .SetProperty(b => b.Exception, message.Exception), stoppingToken);
+                await dbContext.OutboxIntegrationEvent.Where(x => x.Id == message.Id).ExecuteUpdateAsync(setters =>
+                    setters
+                        .SetProperty(b => b.CompleteTime, DateTime.UtcNow)
+                        .SetProperty(b => b.Exception, message.Exception), stoppingToken);
             }
     }
 }
