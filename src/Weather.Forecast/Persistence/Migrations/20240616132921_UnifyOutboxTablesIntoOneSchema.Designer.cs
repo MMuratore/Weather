@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Weather.Forecast.Persistence;
@@ -12,9 +13,11 @@ using Weather.Forecast.Persistence;
 namespace Weather.Forecast.Persistence.Migrations
 {
     [DbContext(typeof(ForecastDbContext))]
-    partial class ForecastDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240616132921_UnifyOutboxTablesIntoOneSchema")]
+    partial class UnifyOutboxTablesIntoOneSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,11 +125,6 @@ namespace Weather.Forecast.Persistence.Migrations
                         .HasColumnType("character varying(1000)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompleteTime");
-
-                    b.HasIndex("CreationTime")
-                        .IsDescending();
 
                     b.ToTable("OutboxMessage", "outbox");
                 });

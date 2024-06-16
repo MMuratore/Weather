@@ -1,50 +1,35 @@
 ﻿using System.Text.Json;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Quartz;
 using Weather.SharedKernel.Persistence;
 
 namespace Weather.SharedKernel.Outbox;
 
-public sealed class OutboxMessageProcessor<TDbContext>(
-    ILogger<OutboxMessageProcessor<TDbContext>> logger,
-    IServiceProvider serviceProvider,
+[DisallowConcurrentExecution]
+public sealed class OutboxMessageProcessor(
+    ILogger<OutboxMessageProcessor> logger,
+    IPublisher publisher,
+    TransactionalDbContext dbContext,
     IOptions<OutboxMessageProcessorOptions> options)
-    : BackgroundService
-    where TDbContext : BaseDbContext
+    : IJob
 {
     private OutboxMessageProcessorOptions Options { get; } = options.Value;
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        logger.LogInformation("{DbContextName} Outbox Message Processor Hosted Service running.",
-            typeof(TDbContext).Name);
-
-        using PeriodicTimer timer = new(Options.Period);
-
-        try
-        {
-            while (await timer.WaitForNextTickAsync(stoppingToken)) await PublishIntegrationEventAsync(stoppingToken);
-        }
-        catch (OperationCanceledException)
-        {
-            logger.LogInformation("{DbContextName} Outbox Message Processor Hosted Service is stopping.",
-                typeof(TDbContext).Name);
-        }
-    }
+    public async Task Execute(IJobExecutionContext context) =>
+        await PublishIntegrationEventAsync(context.CancellationToken);
 
     private async Task PublishIntegrationEventAsync(CancellationToken stoppingToken)
     {
-        using var scope = serviceProvider.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<TDbContext>();
-        var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
+        var query = dbContext.Set<OutboxMessage>().Where(x => x.CompleteTime == null)
+            .OrderBy(x => x.CreationTime).AsQueryable();
 
-        var messages = await dbContext.Set<OutboxMessage>().Where(x => x.CompleteTime == null)
-            .OrderBy(x => x.CreationTime).Take(Options.MaximumConcurrentMessage).ToListAsync(stoppingToken);
+        if (Options.MaximumConcurrentMessage is not null) query = query.Take(Options.MaximumConcurrentMessage.Value);
 
+        var messages = await query.AsNoTracking().ToListAsync(stoppingToken);
+        
         foreach (var message in messages)
             try
             {
@@ -52,6 +37,7 @@ public sealed class OutboxMessageProcessor<TDbContext>(
                 if (type is null)
                 {
                     logger.LogError("Type not found. Integration Event Id: '{IntegrationEventId}'", message.Id);
+                    message.Exception = "Type not found";
                     continue;
                 }
 
@@ -62,6 +48,7 @@ public sealed class OutboxMessageProcessor<TDbContext>(
                     logger.LogError(
                         "An error occurred during deserialization. Integration Event Id: '{IntegrationEventId}'",
                         message.Id);
+                    message.Exception = "An error occurred during deserialization";
                     continue;
                 }
 
@@ -74,9 +61,9 @@ public sealed class OutboxMessageProcessor<TDbContext>(
             }
             finally
             {
-                message.CompleteTime = DateTime.UtcNow;
+                await dbContext.OutboxIntegrationEvent.Where(x => x.Id == message.Id).ExecuteUpdateAsync(setters => setters
+                    .SetProperty(b => b.CompleteTime, DateTime.UtcNow)
+                    .SetProperty(b => b.Exception, message.Exception), stoppingToken);
             }
-
-        await dbContext.SaveChangesAsync(stoppingToken);
     }
 }

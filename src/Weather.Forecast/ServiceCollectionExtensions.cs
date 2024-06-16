@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Weather.Forecast.Features.Forecasts;
 using Weather.Forecast.Persistence;
-using Weather.SharedKernel.Outbox;
 
 namespace Weather.Forecast;
 
@@ -32,8 +31,6 @@ public static class ServiceCollectionExtensions
                 options.ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
                 options.EnableSensitiveDataLogging();
             }, optionsLifetime: ServiceLifetime.Singleton);
-
-        builder.Services.AddHostedService<OutboxMessageProcessor<ForecastDbContext>>();
 
         builder.AddForecastServices();
 

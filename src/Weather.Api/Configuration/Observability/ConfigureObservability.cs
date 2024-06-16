@@ -26,6 +26,7 @@ internal static class ConfigureObservability
                 tracing.AddProcessor<HttpContextProcessor>();
                 tracing.AddAspNetCoreInstrumentation();
                 tracing.AddEntityFrameworkCoreInstrumentation();
+                tracing.AddQuartzInstrumentation();
                 tracing.AddOtlpExporter();
             })
             .WithMetrics(metrics =>

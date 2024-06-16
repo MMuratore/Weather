@@ -12,7 +12,7 @@ infra:
 	docker compose --profile infra up -d --build
 
 migrate:
-	dotnet ef migrations bundle -o efbundle-forecast.exe --force --self-contained -p .\src\Weather.Forecast -s .\src\Weather.Api
+	dotnet ef migrations bundle -o efbundle-forecast.exe --force --self-contained -p .\src\Weather.Forecast -s .\src\Weather.Api -c ForecastDbContext
 	efbundle-forecast.exe --connection 'Host=localhost;Database=Weather.Api;Username=postgres;Password=P@ssw0rd'
 
 up:

@@ -5,18 +5,18 @@ using Weather.SharedKernel.Outbox;
 
 namespace Weather.SharedKernel.Persistence;
 
-public abstract class TransactionalDbContext : BaseDbContext
+public class TransactionalDbContext : BaseDbContext
 {
-    protected TransactionalDbContext(DbContextOptions options,
+    public TransactionalDbContext(DbContextOptions options,
         PublishDomainEventsInterceptor? domainEventsInterceptor) : base(options, domainEventsInterceptor)
     {
     }
 
-    protected TransactionalDbContext(DbContextOptions options) : base(options)
+    public TransactionalDbContext(DbContextOptions options) : base(options)
     {
     }
 
-    protected DbSet<OutboxMessage> OutboxIntegrationEvent { get; set; }
+    internal DbSet<OutboxMessage> OutboxIntegrationEvent { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -79,7 +79,7 @@ internal static class ConfigureFastEndpoint
     internal static IApplicationBuilder UseFastEndpoint(this WebApplication app)
     {
         var options = app.Services.GetRequiredService<IOptions<SwaggerOAuthOptions>>().Value;
-       
+
         app.UseFastEndpoints(o =>
         {
             o.Endpoints.RoutePrefix = DefaultRoutePrefix;
