@@ -33,8 +33,7 @@ internal static class ConfigureObservability
             {
                 metrics.AddAspNetCoreInstrumentation();
                 metrics.AddRuntimeInstrumentation();
-                metrics.AddMeter("Microsoft.AspNetCore.Hosting");
-                metrics.AddMeter("Microsoft.AspNetCore.Server.Kestrel");
+                metrics.AddProcessInstrumentation();
                 metrics.AddOtlpExporter();
             });
 
