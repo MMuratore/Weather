@@ -27,6 +27,7 @@ internal static class ConfigureObservability
                 tracing.AddAspNetCoreInstrumentation();
                 tracing.AddEntityFrameworkCoreInstrumentation();
                 tracing.AddQuartzInstrumentation();
+                tracing.AddHttpClientInstrumentation();
                 tracing.AddOtlpExporter();
             })
             .WithMetrics(metrics =>
@@ -34,6 +35,7 @@ internal static class ConfigureObservability
                 metrics.AddAspNetCoreInstrumentation();
                 metrics.AddRuntimeInstrumentation();
                 metrics.AddProcessInstrumentation();
+                metrics.AddHttpClientInstrumentation();
                 metrics.AddOtlpExporter();
             });
 
