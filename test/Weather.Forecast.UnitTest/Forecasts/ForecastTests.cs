@@ -15,7 +15,7 @@ public class ForecastTests : BaseUnitTest
         var (temperature, summary) = Faker.TemperatureWithSummary();
 
         //Act
-        var forecast = WeatherForecast.Create(date, temperature, summary);
+        var forecast = WeatherForecast.Create(date, temperature);
 
         //Assert
         forecast.Temperature.Should().Be(temperature);

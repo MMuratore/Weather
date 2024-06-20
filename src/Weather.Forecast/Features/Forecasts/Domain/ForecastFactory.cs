@@ -18,23 +18,8 @@ internal sealed class ForecastFactory
             var celsius = TemperatureFrom +
                           (decimal)(Random.Shared.NextDouble() * (double)(TemperatureTo - TemperatureFrom));
 
-            Summary? summary = celsius switch
-            {
-                < -56 => Summary.Freezing,
-                >= -56 and < -42 => Summary.Bracing,
-                >= -42 and < -28 => Summary.Chilly,
-                >= -28 and < -14 => Summary.Cool,
-                >= -14 and < 0 => Summary.Mild,
-                >= 0 and < 14 => Summary.Warm,
-                >= 14 and < 28 => Summary.Balmy,
-                >= 28 and < 42 => Summary.Hot,
-                >= 42 and < 58 => Summary.Sweltering,
-                > 58 => Summary.Scorching,
-                _ => null
-            };
-
             yield return WeatherForecast.Create(_dateFrom.AddDays(Random.Shared.Next(DateRange)),
-                new Temperature(celsius), summary, meteorologistId);
+                new Temperature(celsius), meteorologistId);
         }
     }
 }
