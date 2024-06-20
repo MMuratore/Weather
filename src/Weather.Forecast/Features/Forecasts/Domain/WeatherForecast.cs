@@ -7,7 +7,7 @@ internal sealed class WeatherForecast : Entity<WeatherForecastId>, IAggregateRoo
 {
     private WeatherForecast(DateOnly date, Temperature temperature, Summary? summary, MeteorologistId? meteorologistId)
     {
-        Id = WeatherForecastId.Empty;
+        Id = WeatherForecastId.NewWeatherForecastId;
         Date = date;
         Temperature = temperature;
         Summary = summary;

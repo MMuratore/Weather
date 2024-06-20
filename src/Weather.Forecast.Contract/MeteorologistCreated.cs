@@ -2,7 +2,7 @@
 
 namespace Weather.Forecast.Contract;
 
-public sealed record WeatherForecastCreated(string? Summary, Guid? MeteorologistId) : IIntegrationEvent
+public sealed record MeteorologistCreated(Guid Id, string Fullname) : IIntegrationEvent
 {
     public DateTimeOffset DateCreated { get; private set; } = DateTimeOffset.Now;
 }

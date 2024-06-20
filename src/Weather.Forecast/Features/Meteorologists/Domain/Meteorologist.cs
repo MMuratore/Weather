@@ -14,10 +14,11 @@ internal sealed class Meteorologist : Entity<MeteorologistId>, IAggregateRoot
 
     private Meteorologist(Name name, BirthDate birthDay)
     {
-        Id = MeteorologistId.Empty;
+        Id = MeteorologistId.NewWeatherForecastId;
         Name = name;
         BirthDay = birthDay;
         _forecastCount = 0;
+        AddDomainEvent(new MeteorologistCreated(Id, Name.Fullname));
     }
 
     public Name Name { get; private set; }

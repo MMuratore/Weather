@@ -18,6 +18,7 @@ public static class ServiceCollectionExtensions
     {
         builder.Services.AddMediatR(o => o.RegisterServicesFromAssemblies(assemblies.ToArray()));
         builder.Services.AddScoped<PublishDomainEventsInterceptor>();
+        
         var section = builder.Configuration.GetRequiredSection(OutboxMessageProcessorOptions.Section);
         builder.Services.Configure<OutboxMessageProcessorOptions>(section);
         var options = new OutboxMessageProcessorOptions();
@@ -47,7 +48,7 @@ public static class ServiceCollectionExtensions
 
             o.AddJob<OutboxMessageProcessor>(jobKey)
                 .AddTrigger(t =>
-                    t.ForJob(jobKey).WithSimpleSchedule(s => s.WithInterval(options.Period).RepeatForever())
+                    t.WithIdentity(nameof(OutboxMessageProcessor)).ForJob(jobKey).WithSimpleSchedule(s => s.WithInterval(options.Period).RepeatForever())
                 );
 
             o.UsePersistentStore(c =>
