@@ -3,7 +3,8 @@ $entries = @(
     "127.0.0.1 aspire.docker.internal",
     "127.0.0.1 keycloak.docker.internal",
     "127.0.0.1 traefik.docker.internal",
-    "127.0.0.1 weather.docker.internal"
+    "127.0.0.1 weather.docker.internal",
+    "127.0.0.1 papercut.docker.internal"
 )
 
 # Define the path to the hosts file

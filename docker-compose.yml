@@ -109,5 +109,15 @@
       - "traefik.http.routers.keycloak.rule=Host(`keycloak.docker.internal`)"
       - "traefik.http.routers.keycloak.tls=true"
 
+  papercut:
+    image: changemakerstudiosus/papercut-smtp
+    profiles:
+      - infra
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.papercut.loadbalancer.server.port=80"
+      - "traefik.http.routers.papercut.rule=Host(`papercut.docker.internal`)"
+      - "traefik.http.routers.papercut.tls=true"
+    
 volumes:
   postgres:
