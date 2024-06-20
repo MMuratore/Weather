@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Weather.Forecast.Features.Forecasts.Client;
+using Weather.Forecast.Features.Forecasts.Domain;
 
 namespace Weather.Forecast.Features.Forecasts;
 

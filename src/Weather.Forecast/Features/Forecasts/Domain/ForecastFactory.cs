@@ -1,7 +1,6 @@
-using Weather.Forecast.Features.Forecasts.Domain;
 using Weather.Forecast.Features.Meteorologists.Domain;
 
-namespace Weather.Forecast.Features.Forecasts;
+namespace Weather.Forecast.Features.Forecasts.Domain;
 
 internal sealed class ForecastFactory
 {

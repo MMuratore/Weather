@@ -44,16 +44,12 @@ public sealed class OutboxMessageProcessor(
     private async Task UpdateOutboxMessages(OutboxMessage message, CancellationToken stoppingToken)
     {
         if (message.Exception is null)
-        {
             await dbContext.OutboxIntegrationEvent.Where(x => x.Id == message.Id).ExecuteDeleteAsync(stoppingToken);
-        }
         else
-        {
             await dbContext.OutboxIntegrationEvent.Where(x => x.Id == message.Id).ExecuteUpdateAsync(setters =>
                 setters
                     .SetProperty(b => b.CompleteTime, DateTime.UtcNow)
                     .SetProperty(b => b.Exception, message.Exception), stoppingToken);
-        }
     }
 
     private async Task PublishIntegrationEventAsync(OutboxMessage message, CancellationToken stoppingToken)
