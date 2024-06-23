@@ -18,8 +18,12 @@ internal sealed class ForecastFactory
             var celsius = TemperatureFrom +
                           (decimal)(Random.Shared.NextDouble() * (double)(TemperatureTo - TemperatureFrom));
 
-            yield return WeatherForecast.Create(_dateFrom.AddDays(Random.Shared.Next(DateRange)),
+            var forecast = WeatherForecast.Create(_dateFrom.AddDays(Random.Shared.Next(DateRange)),
                 new Temperature(celsius), meteorologistId);
+            
+            forecast.ClearDomainEvents();
+            
+            yield return forecast;
         }
     }
 }
