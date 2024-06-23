@@ -20,7 +20,7 @@ internal sealed class ForecastFactory
 
             var forecast = WeatherForecast.Create(_dateFrom.AddDays(Random.Shared.Next(DateRange)),
                 new Temperature(celsius), meteorologistId);
-            
+
             yield return forecast;
         }
     }

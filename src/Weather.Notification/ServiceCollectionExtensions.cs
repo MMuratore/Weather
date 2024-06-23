@@ -22,14 +22,12 @@ public static class ServiceCollectionExtensions
         builder.Services.Configure<EmailOptions>(section);
         var options = new EmailOptions();
         section.Bind(options);
-        
+
         var fluentEmailBuilder = builder.Services.AddFluentEmail(options.DefaultFrom);
 
         if (builder.Environment.IsDevelopment())
-        {
             fluentEmailBuilder.AddSmtpSender(new SmtpClient(options.Smtp.Host, options.Smtp.Port));
-        }
-        
+
         return builder;
     }
 }

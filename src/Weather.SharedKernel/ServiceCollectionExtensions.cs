@@ -19,13 +19,14 @@ public static class ServiceCollectionExtensions
             o.RegisterServicesFromAssemblies(assemblies.ToArray());
             o.NotificationPublisher = new CustomTaskWhenAllPublisher();
         });
-        
+
         builder.Services.AddScoped<PublishDomainEventsInterceptor>();
 
         return builder;
     }
 
-    public static WebApplicationBuilder AddTransactionalDispatcher<TDbContext>(this WebApplicationBuilder builder, string connectionStringName = "Default")
+    public static WebApplicationBuilder AddTransactionalDispatcher<TDbContext>(this WebApplicationBuilder builder,
+        string connectionStringName = "Default")
         where TDbContext : TransactionalDbContext
     {
         var section = builder.Configuration.GetRequiredSection(OutboxMessageProcessorOptions.Section);
@@ -36,7 +37,7 @@ public static class ServiceCollectionExtensions
         var connectionString = builder.Configuration.GetConnectionString(connectionStringName) ??
                                throw new NullReferenceException(
                                    $"the {connectionStringName.ToLower()} connection string should not be null");
-        
+
         builder.Services.AddQuartz(o =>
         {
             var jobKey = new JobKey(nameof(OutboxMessageProcessor<TDbContext>));

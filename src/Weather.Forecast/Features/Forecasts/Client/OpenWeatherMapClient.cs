@@ -20,7 +20,7 @@ internal sealed class OpenWeatherMapClient(
         if (response is null) return null;
 
         var date = DateOnly.FromDateTime(DateTime.UnixEpoch.AddSeconds(response.dt));
-        var forecast = WeatherForecast.Create(date, new Temperature((decimal)response.main.temp), null);
+        var forecast = WeatherForecast.Create(date, new Temperature((decimal)response.main.temp));
         await dbContext.Set<WeatherForecast>().AddAsync(forecast);
         await dbContext.SaveChangesAsync();
 

@@ -29,11 +29,8 @@ internal sealed class ForecastSeederHostedService(
             {
                 var forecasts = forecastFactory.Create(10000).ToArray();
 
-                foreach (var forecast in forecasts)
-                {
-                    forecast.ClearDomainEvents();
-                }
-                
+                foreach (var forecast in forecasts) forecast.ClearDomainEvents();
+
                 await dbContext.Set<WeatherForecast>().AddRangeAsync(forecasts, stoppingToken);
                 await dbContext.SaveChangesAsync(stoppingToken);
             }

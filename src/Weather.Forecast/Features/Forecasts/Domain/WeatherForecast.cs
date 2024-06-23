@@ -15,6 +15,11 @@ internal sealed class WeatherForecast : Entity<WeatherForecastId>, IAggregateRoo
         AddDomainEvent(new WeatherForecastCreated(Summary, meteorologistId));
     }
 
+    public DateOnly Date { get; private set; }
+    public Temperature Temperature { get; private set; }
+    public Summary? Summary { get; private set; }
+    public MeteorologistId? MeteorologistId { get; private set; }
+
     private static Summary? GetSummary(Temperature temperature)
     {
         return temperature.Celsius switch
@@ -31,11 +36,6 @@ internal sealed class WeatherForecast : Entity<WeatherForecastId>, IAggregateRoo
             _ => null
         };
     }
-
-    public DateOnly Date { get; private set; }
-    public Temperature Temperature { get; private set; }
-    public Summary? Summary { get; private set; }
-    public MeteorologistId? MeteorologistId { get; private set; }
 
     internal static WeatherForecast Create(DateOnly date, Temperature temperature,
         MeteorologistId? meteorologistId = null) =>

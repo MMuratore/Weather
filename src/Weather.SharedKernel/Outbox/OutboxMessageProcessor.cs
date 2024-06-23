@@ -26,10 +26,7 @@ public sealed class OutboxMessageProcessor<TDbContext>(
     {
         var messages = await GetOutboxMessages(stoppingToken);
 
-        foreach (var message in messages)
-        {
-            await PublishIntegrationEventAsync(message, stoppingToken);
-        }
+        foreach (var message in messages) await PublishIntegrationEventAsync(message, stoppingToken);
     }
 
     private Task<List<OutboxMessage>> GetOutboxMessages(CancellationToken stoppingToken)
@@ -41,7 +38,7 @@ public sealed class OutboxMessageProcessor<TDbContext>(
 
         return query.AsNoTracking().ToListAsync(stoppingToken);
     }
-    
+
     private async Task PublishIntegrationEventAsync(OutboxMessage message, CancellationToken stoppingToken)
     {
         var type = Type.GetType(message.Type);
@@ -53,7 +50,7 @@ public sealed class OutboxMessageProcessor<TDbContext>(
         }
 
         var integrationEvent = JsonSerializer.Deserialize(message.Content, type);
-        
+
         if (integrationEvent == null)
         {
             logger.LogError(
@@ -74,14 +71,14 @@ public sealed class OutboxMessageProcessor<TDbContext>(
                 logger.LogError(innerException,
                     "An error occurred during execution. Integration Event Id: '{IntegrationEventId}'",
                     message.Id);
-                
+
                 var traceId = Activity.Current?.TraceId.ToString();
                 var traceMessage = traceId is null ? "" : $" occured in trace: '{traceId}'";
-                
+
                 message.UncaughtExceptions.Add($"exception: '{innerException?.Message ?? string.Empty}'{traceMessage}");
             }
         }
-        
+
         await UpdateOutboxMessages(message, stoppingToken);
     }
 
