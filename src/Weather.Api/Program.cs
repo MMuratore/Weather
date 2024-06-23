@@ -7,7 +7,7 @@ using Weather.Api.Configuration.Observability;
 using Weather.Api.Configuration.Security;
 using Weather.Forecast;
 using Weather.Notification;
-using Weather.SharedKernel.Persistence;
+using Weather.SharedKernel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +22,7 @@ List<Assembly> moduleAssemblies = [typeof(Program).Assembly];
 
 builder.AddForecastModule(moduleAssemblies);
 builder.AddNotificationModule(moduleAssemblies);
-builder.AddTransactionalDispatcher(moduleAssemblies);
+builder.AddMediatR(moduleAssemblies);
 
 var app = builder.Build();
 

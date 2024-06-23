@@ -5,11 +5,9 @@ namespace Weather.SharedKernel.Outbox;
 
 internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
 {
-    private const string Schema = "outbox";
-
     public void Configure(EntityTypeBuilder<OutboxMessage> builder)
     {
-        builder.ToTable(nameof(OutboxMessage), Schema);
+        builder.ToTable(nameof(OutboxMessage));
         builder.HasKey(t => t.Id);
 
         builder.Property(x => x.Type).HasMaxLength(1000);
@@ -17,7 +15,5 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
 
         builder.HasIndex(x => x.CompleteTime);
         builder.HasIndex(x => x.CreationTime).IsDescending();
-
-        builder.Property(x => x.Exception).HasMaxLength(1000);
     }
 }

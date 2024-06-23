@@ -1,54 +1,49 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.AspNetCore;
 using Weather.SharedKernel.Outbox;
+using Weather.SharedKernel.Persistence;
 
-namespace Weather.SharedKernel.Persistence;
+namespace Weather.SharedKernel;
 
 public static class ServiceCollectionExtensions
 {
-    public static WebApplicationBuilder AddTransactionalDispatcher(this WebApplicationBuilder builder,
+    public static WebApplicationBuilder AddMediatR(this WebApplicationBuilder builder,
         List<Assembly> assemblies)
     {
-        builder.Services.AddMediatR(o => o.RegisterServicesFromAssemblies(assemblies.ToArray()));
+        builder.Services.AddMediatR(o =>
+        {
+            o.RegisterServicesFromAssemblies(assemblies.ToArray());
+            o.NotificationPublisher = new CustomTaskWhenAllPublisher();
+        });
+        
         builder.Services.AddScoped<PublishDomainEventsInterceptor>();
 
+        return builder;
+    }
+
+    public static WebApplicationBuilder AddTransactionalDispatcher<TDbContext>(this WebApplicationBuilder builder, string connectionStringName = "Default")
+        where TDbContext : TransactionalDbContext
+    {
         var section = builder.Configuration.GetRequiredSection(OutboxMessageProcessorOptions.Section);
         builder.Services.Configure<OutboxMessageProcessorOptions>(section);
         var options = new OutboxMessageProcessorOptions();
         section.Bind(options);
 
-        var connectionString = builder.Configuration.GetConnectionString("Default") ??
+        var connectionString = builder.Configuration.GetConnectionString(connectionStringName) ??
                                throw new NullReferenceException(
-                                   "the default connection string should not be null");
-
-        builder.Services.AddDbContext<TransactionalDbContext>(
-            o =>
-            {
-                o.UseNpgsql(connectionString, cfg =>
-                {
-                    if (builder.Environment.IsProduction()) cfg.EnableRetryOnFailure();
-                });
-
-                if (!builder.Environment.IsDevelopment()) return;
-
-                o.ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
-                o.EnableSensitiveDataLogging();
-            }, optionsLifetime: ServiceLifetime.Singleton);
-
+                                   $"the {connectionStringName.ToLower()} connection string should not be null");
+        
         builder.Services.AddQuartz(o =>
         {
-            var jobKey = new JobKey(nameof(OutboxMessageProcessor));
+            var jobKey = new JobKey(nameof(OutboxMessageProcessor<TDbContext>));
 
-            o.AddJob<OutboxMessageProcessor>(jobKey)
+            o.AddJob<OutboxMessageProcessor<TDbContext>>(jobKey)
                 .AddTrigger(t =>
-                    t.WithIdentity(nameof(OutboxMessageProcessor)).ForJob(jobKey)
+                    t.WithIdentity(nameof(OutboxMessageProcessor<TDbContext>)).ForJob(jobKey)
                         .WithSimpleSchedule(s => s.WithInterval(options.Period).RepeatForever())
                 );
 

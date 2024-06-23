@@ -9,12 +9,12 @@ using Weather.SharedKernel.Persistence;
 namespace Weather.SharedKernel.Outbox;
 
 [DisallowConcurrentExecution]
-public sealed class OutboxMessageProcessor(
-    ILogger<OutboxMessageProcessor> logger,
+public sealed class OutboxMessageProcessor<TDbContext>(
+    ILogger<OutboxMessageProcessor<TDbContext>> logger,
     IPublisher publisher,
-    TransactionalDbContext dbContext,
+    TDbContext dbContext,
     IOptions<OutboxMessageProcessorOptions> options)
-    : IJob
+    : IJob where TDbContext : TransactionalDbContext
 {
     private OutboxMessageProcessorOptions Options { get; } = options.Value;
 
@@ -26,64 +26,68 @@ public sealed class OutboxMessageProcessor(
         var messages = await GetOutboxMessages(stoppingToken);
 
         foreach (var message in messages)
-            try
-            {
-                await PublishIntegrationEventAsync(message, stoppingToken);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "An error occurred processing domain event messages.");
-                message.Exception = ex.Message;
-            }
-            finally
-            {
-                await UpdateOutboxMessages(message, stoppingToken);
-            }
-    }
-
-    private async Task UpdateOutboxMessages(OutboxMessage message, CancellationToken stoppingToken)
-    {
-        if (message.Exception is null)
-            await dbContext.OutboxIntegrationEvent.Where(x => x.Id == message.Id).ExecuteDeleteAsync(stoppingToken);
-        else
-            await dbContext.OutboxIntegrationEvent.Where(x => x.Id == message.Id).ExecuteUpdateAsync(setters =>
-                setters
-                    .SetProperty(b => b.CompleteTime, DateTime.UtcNow)
-                    .SetProperty(b => b.Exception, message.Exception), stoppingToken);
-    }
-
-    private async Task PublishIntegrationEventAsync(OutboxMessage message, CancellationToken stoppingToken)
-    {
-        var type = Type.GetType(message.Type);
-        if (type is null)
         {
-            logger.LogError("Type not found. Integration Event Id: '{IntegrationEventId}'", message.Id);
-            message.Exception = "Type not found";
-            return;
+            await PublishIntegrationEventAsync(message, stoppingToken);
         }
-
-        var integrationEvent = JsonSerializer.Deserialize(message.Content, type);
-
-        if (integrationEvent == null)
-        {
-            logger.LogError(
-                "An error occurred during deserialization. Integration Event Id: '{IntegrationEventId}'",
-                message.Id);
-            message.Exception = "An error occurred during deserialization";
-            return;
-        }
-
-        await publisher.Publish(integrationEvent, stoppingToken);
     }
 
-    private async Task<List<OutboxMessage>> GetOutboxMessages(CancellationToken stoppingToken)
+    private Task<List<OutboxMessage>> GetOutboxMessages(CancellationToken stoppingToken)
     {
         var query = dbContext.Set<OutboxMessage>().Where(x => x.CompleteTime == null)
             .OrderBy(x => x.CreationTime).AsQueryable();
 
         if (Options.MaximumConcurrentMessage is not null) query = query.Take(Options.MaximumConcurrentMessage.Value);
 
-        var messages = await query.AsNoTracking().ToListAsync(stoppingToken);
-        return messages;
+        return query.AsNoTracking().ToListAsync(stoppingToken);
+    }
+    
+    private async Task PublishIntegrationEventAsync(OutboxMessage message, CancellationToken stoppingToken)
+    {
+        var type = Type.GetType(message.Type);
+        if (type is null)
+        {
+            logger.LogError("Type not found. Integration Event Id: '{IntegrationEventId}'", message.Id);
+            message.UncaughtExceptions.Add("Type not found.");
+            return;
+        }
+
+        var integrationEvent = JsonSerializer.Deserialize(message.Content, type);
+        
+        if (integrationEvent == null)
+        {
+            logger.LogError(
+                "An error occurred during deserialization. Integration Event Id: '{IntegrationEventId}'",
+                message.Id);
+            message.UncaughtExceptions.Add("An error occurred during deserialization.");
+            return;
+        }
+
+        try
+        {
+            await publisher.Publish(integrationEvent, stoppingToken);
+        }
+        catch (AggregateException e)
+        {
+            foreach (var innerException in e.InnerExceptions)
+            {
+                logger.LogError(innerException,
+                    "An error occurred during execution. Integration Event Id: '{IntegrationEventId}'",
+                    message.Id);
+                message.UncaughtExceptions.Add(innerException.Message);
+            }
+        }
+        
+        await UpdateOutboxMessages(message, stoppingToken);
+    }
+
+    private async Task UpdateOutboxMessages(OutboxMessage message, CancellationToken stoppingToken)
+    {
+        if (message.UncaughtExceptions.Count == 0)
+            await dbContext.OutboxIntegrationEvent.Where(x => x.Id == message.Id).ExecuteDeleteAsync(stoppingToken);
+        else
+            await dbContext.OutboxIntegrationEvent.Where(x => x.Id == message.Id).ExecuteUpdateAsync(setters =>
+                setters
+                    .SetProperty(b => b.CompleteTime, DateTime.UtcNow)
+                    .SetProperty(b => b.UncaughtExceptions, message.UncaughtExceptions), stoppingToken);
     }
 }

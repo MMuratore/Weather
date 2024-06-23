@@ -14,7 +14,7 @@ internal sealed class WeatherForecastConfiguration : IEntityTypeConfiguration<We
             .HasConversion(
                 v => (Guid)v,
                 v => v)
-            .ValueGeneratedOnAdd();
+            .ValueGeneratedNever();
 
         builder.Property(x => x.Temperature)
             .HasConversion(
