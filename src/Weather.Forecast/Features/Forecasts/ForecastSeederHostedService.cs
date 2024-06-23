@@ -15,7 +15,6 @@ internal sealed class ForecastSeederHostedService(
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
         await using var scope = provider.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ForecastDbContext>();
         dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
@@ -29,7 +28,7 @@ internal sealed class ForecastSeederHostedService(
             for (var i = 0; i < 100; i++)
             {
                 var forecasts = forecastFactory.Create(10000);
-
+                
                 await dbContext.Set<WeatherForecast>().AddRangeAsync(forecasts, stoppingToken);
                 await dbContext.SaveChangesAsync(stoppingToken);
             }

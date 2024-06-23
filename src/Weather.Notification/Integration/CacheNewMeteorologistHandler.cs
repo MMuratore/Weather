@@ -8,7 +8,7 @@ internal sealed class CacheNewMeteorologistHandler(IMeteorologistCache meteorolo
 {
     public async Task Handle(MeteorologistCreated notification, CancellationToken cancellationToken)
     {
-        var meteorologist = new Meteorologist(notification.Id, notification.Fullname);
+        var meteorologist = new Meteorologist(notification.MeteorologistId, notification.Fullname);
 
         await meteorologistCache.StoreAsync(meteorologist);
     }

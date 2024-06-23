@@ -17,7 +17,6 @@ internal sealed class NotifyByEmailNewForecastHandler(
     {
         var meteorologist = await meteorologistCache.GetByIdAsync(notification.MeteorologistId);
 
-
         var response = await fluentEmail
             .To(To)
             .Subject("A new forecast was published")
