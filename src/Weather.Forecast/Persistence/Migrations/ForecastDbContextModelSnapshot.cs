@@ -27,7 +27,6 @@ namespace Weather.Forecast.Persistence.Migrations
             modelBuilder.Entity("Weather.Forecast.Features.Forecasts.Domain.WeatherForecast", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateOnly>("Date")
@@ -55,7 +54,6 @@ namespace Weather.Forecast.Persistence.Migrations
             modelBuilder.Entity("Weather.Forecast.Features.Meteorologists.Domain.Meteorologist", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<int>("_forecastCount")
@@ -112,14 +110,14 @@ namespace Weather.Forecast.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Exception")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
-
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
+
+                    b.Property<List<string>>("UncaughtExceptions")
+                        .IsRequired()
+                        .HasColumnType("text[]");
 
                     b.HasKey("Id");
 
@@ -128,7 +126,7 @@ namespace Weather.Forecast.Persistence.Migrations
                     b.HasIndex("CreationTime")
                         .IsDescending();
 
-                    b.ToTable("OutboxMessage", "outbox");
+                    b.ToTable("OutboxMessage", "forecast");
                 });
 
             modelBuilder.Entity("Weather.Forecast.Features.Forecasts.Domain.WeatherForecast", b =>
