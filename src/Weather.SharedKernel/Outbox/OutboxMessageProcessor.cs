@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -68,12 +69,16 @@ public sealed class OutboxMessageProcessor<TDbContext>(
         }
         catch (AggregateException e)
         {
-            foreach (var innerException in e.InnerExceptions)
+            foreach (var innerException in e.InnerExceptions.Select(x => x.InnerException))
             {
                 logger.LogError(innerException,
                     "An error occurred during execution. Integration Event Id: '{IntegrationEventId}'",
                     message.Id);
-                message.UncaughtExceptions.Add(innerException.Message);
+                
+                var traceId = Activity.Current?.TraceId.ToString();
+                var traceMessage = traceId is null ? "" : $" occured in trace: '{traceId}'";
+                
+                message.UncaughtExceptions.Add($"exception: '{innerException?.Message ?? string.Empty}'{traceMessage}");
             }
         }
         
