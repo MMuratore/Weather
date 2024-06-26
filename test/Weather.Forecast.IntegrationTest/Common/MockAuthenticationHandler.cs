@@ -12,7 +12,6 @@ internal sealed class MockAuthenticationHandler(
     UrlEncoder encoder)
     : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
 {
-    
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var claims = new List<Claim>
@@ -21,7 +20,7 @@ internal sealed class MockAuthenticationHandler(
             new(ClaimTypes.Surname, MockAuthenticationDefaults.UserLastName),
             new(ClaimTypes.Email, MockAuthenticationDefaults.UserEmail)
         };
-        
+
         var identity = new ClaimsIdentity(claims, "Test");
         var principal = new ClaimsPrincipal(identity);
         var ticket = new AuthenticationTicket(principal, MockAuthenticationDefaults.AuthenticationScheme);

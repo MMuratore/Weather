@@ -15,10 +15,10 @@ public class CreateMeteorologistIntegrationTests(ApiFactory apiFactory) : BaseIn
     {
         //Act
         var (response, result) = await App.Client.POSTAsync<CreateMeteorologistIntegration, MeteorologistResponse>();
-        
+
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.Created);
-        
+
         var context = App.CreateDbContext();
 
         var meteorologist = await context.Set<Meteorologist>().FirstAsync();

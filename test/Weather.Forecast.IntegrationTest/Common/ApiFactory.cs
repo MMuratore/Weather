@@ -1,11 +1,9 @@
 ﻿using System.Net.Http.Headers;
-using Bogus;
+using FastEndpoints.Testing;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Quartz;
 using Weather.Forecast.Features.Forecasts;
 using Weather.Forecast.Persistence;
@@ -13,75 +11,42 @@ using Weather.SharedKernel;
 
 namespace Weather.Forecast.Integration.Test.Common;
 
-public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
+public class ApiFactory : AppFixture<Program>
 {
     internal readonly DatabaseFixture DatabaseFixture = new();
-    public readonly Faker Faker = new();
-    public HttpClient Client { get; set; } = null!;
 
     internal ForecastDbContext CreateDbContext() =>
         new(new DbContextOptionsBuilder<ForecastDbContext>()
             .UseNpgsql(DatabaseFixture.ConnectionString)
             .Options);
-    
-    protected override void ConfigureClient(HttpClient client)
+
+    protected override Task SetupAsync()
     {
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(MockAuthenticationDefaults.AuthenticationScheme);
+        Client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue(MockAuthenticationDefaults.AuthenticationScheme);
+        return Task.CompletedTask;
     }
 
-    public async Task InitializeAsync()
+    protected override async Task PreSetupAsync() => await DatabaseFixture.InitializeAsync();
+
+    protected override async Task TearDownAsync() => await DatabaseFixture.DisposeAsync();
+
+    protected override void ConfigureApp(IWebHostBuilder a)
     {
-        await DatabaseFixture.InitializeAsync();
-        Client = CreateClient();
+        a.UseSetting("ConnectionStrings:Default", DatabaseFixture.ConnectionString);
+        a.UseSetting("ConnectionStrings:Forecast", DatabaseFixture.ConnectionString);
     }
 
-    public new async Task DisposeAsync() => await DatabaseFixture.DisposeAsync();
-    
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    protected override void ConfigureServices(IServiceCollection s)
     {
-        builder.ConfigureServices(services =>
-        {
-            ConfigureAuthenticationServices(services);
-            ConfigureDatabaseServices(services);
-        });
+        s.RemoveHostedService<ForecastSeederHostedService>();
+        s.RemoveHostedService<QuartzHostedService>();
+        ConfigureMockAuthenticationServices(s);
+        MigrateDatabase(s);
     }
 
-    private void ConfigureDatabaseServices(IServiceCollection services)
-    {
-        services.RemoveHostedService<ForecastSeederHostedService>();
-        services.RemoveHostedService<QuartzHostedService>();
 
-        services.RemoveAll(typeof(ForecastDbContext));
-        services.RemoveAll(typeof(DbContextOptions<ForecastDbContext>));
-        services.AddDbContext<ForecastDbContext>(options =>
-        {
-            options.UseNpgsql(DatabaseFixture.ConnectionString);
-        });
-        
-        services.AddQuartz(o =>
-        {
-            o.UsePersistentStore(c =>
-            {
-                c.UsePostgres(p =>
-                {
-                    p.ConnectionString =  DatabaseFixture.ConnectionString;
-                    p.TablePrefix = "quartz.";
-                });
-                c.UseNewtonsoftJsonSerializer();
-            });
-        });
-        
-        var provider = services.BuildServiceProvider();
-        using var scope = provider.CreateScope();
-
-        var context = scope.ServiceProvider.GetRequiredService<ForecastDbContext>();
-        context.Database.Migrate();
-        
-        var file = File.ReadAllText("../../../../.././.local/.postgres/init.sql");
-        context.Database.ExecuteSqlRaw(file);
-    }
-    
-    private static void ConfigureAuthenticationServices(IServiceCollection services)
+    private static void ConfigureMockAuthenticationServices(IServiceCollection services)
     {
         services.AddAuthentication(options =>
             {
@@ -91,5 +56,17 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
             })
             .AddScheme<AuthenticationSchemeOptions, MockAuthenticationHandler>(
                 MockAuthenticationDefaults.AuthenticationScheme, _ => { });
+    }
+
+    private static void MigrateDatabase(IServiceCollection services)
+    {
+        var provider = services.BuildServiceProvider();
+        using var scope = provider.CreateScope();
+
+        var context = scope.ServiceProvider.GetRequiredService<ForecastDbContext>();
+        context.Database.Migrate();
+
+        var file = File.ReadAllText("../../../../.././.local/.postgres/init.sql");
+        context.Database.ExecuteSqlRaw(file);
     }
 }

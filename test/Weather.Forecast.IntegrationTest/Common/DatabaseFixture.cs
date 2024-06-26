@@ -1,5 +1,4 @@
-﻿using System.Data.Common;
-using Npgsql;
+﻿using Npgsql;
 using Respawn;
 using Respawn.Graph;
 using Testcontainers.PostgreSql;
@@ -8,9 +7,9 @@ namespace Weather.Forecast.Integration.Test.Common;
 
 internal sealed class DatabaseFixture : IAsyncLifetime
 {
-    private readonly PostgreSqlContainer container = 
+    private readonly PostgreSqlContainer container =
         new PostgreSqlBuilder().WithImage("postgres:latest").Build();
-    
+
     private Respawner? _respawn;
 
     public string ConnectionString { get; private set; } = string.Empty;
@@ -21,9 +20,9 @@ internal sealed class DatabaseFixture : IAsyncLifetime
         ConnectionString = container.GetConnectionString();
     }
 
-    public Task DisposeAsync() 
+    public Task DisposeAsync()
         => container.DisposeAsync().AsTask();
-    
+
     public async Task ResetDatabaseAsync()
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
@@ -37,7 +36,7 @@ internal sealed class DatabaseFixture : IAsyncLifetime
             ],
             DbAdapter = DbAdapter.Postgres
         });
-        
+
         await _respawn.ResetAsync(connection);
     }
 }

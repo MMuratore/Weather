@@ -49,7 +49,8 @@ public static class ServiceCollectionExtensions
             {
                 c.UsePostgres(p =>
                 {
-                    p.ConnectionString =  connectionString ?? builder.Configuration.GetConnectionString("Default") ?? throw new NullReferenceException("the default connection string should not be null");;
+                    p.ConnectionString = connectionString ?? builder.Configuration.GetConnectionString("Default") ??
+                        throw new NullReferenceException("the default connection string should not be null");
                     p.TablePrefix = "quartz.";
                 });
                 c.UseNewtonsoftJsonSerializer();
@@ -60,19 +61,17 @@ public static class ServiceCollectionExtensions
 
         return builder;
     }
-    
-    public static IServiceCollection RemoveHostedService<T>(this IServiceCollection services) where T : class, IHostedService
+
+    public static IServiceCollection RemoveHostedService<T>(this IServiceCollection services)
+        where T : class, IHostedService
     {
         // Find the service descriptor for the hosted service
         var serviceDescriptor = services.FirstOrDefault(
             d => d.ServiceType == typeof(IHostedService) && d.ImplementationType == typeof(T));
-        
+
         // If the service descriptor is found, remove it
-        if (serviceDescriptor != null)
-        {
-            services.Remove(serviceDescriptor);
-        }
-        
+        if (serviceDescriptor != null) services.Remove(serviceDescriptor);
+
         return services;
     }
 }

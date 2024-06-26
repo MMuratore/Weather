@@ -1,21 +1,17 @@
-﻿namespace Weather.Forecast.Integration.Test.Common;
+﻿using FastEndpoints.Testing;
+
+namespace Weather.Forecast.Integration.Test.Common;
 
 [Collection(ApiFactoryCollection.Name)]
-public abstract class BaseIntegrationTest(ApiFactory app) : IAsyncLifetime
+public abstract class BaseIntegrationTest(ApiFactory app) : TestBase
 {
     protected readonly ApiFactory App = app;
 
-    public Task InitializeAsync()
-    {
-        return Task.CompletedTask;
-    }
-
-    public Task DisposeAsync() => App.DatabaseFixture.ResetDatabaseAsync();
+    protected override Task TearDownAsync() => App.DatabaseFixture.ResetDatabaseAsync();
 }
 
-
 [CollectionDefinition(Name)]
-public sealed class ApiFactoryCollection : ICollectionFixture<ApiFactory>
+public sealed class ApiFactoryCollection : TestCollection<ApiFactory>
 {
     public const string Name = nameof(ApiFactoryCollection);
 }

@@ -27,13 +27,13 @@ public class CreateForecastIntegrationTests(ApiFactory apiFactory) : BaseIntegra
         forecast.Should().NotBeNull();
         forecast.Summary.Should().Be(result.Summary);
     }
-    
+
     [Fact]
     public async Task CreateForecast_WhenSuccess_ShouldHaveAnotherWeatherForecast()
     {
         //Act
         var (response, result) = await App.Client.POSTAsync<CreateForecastIntegration, ForecastResponse>();
-        
+
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.Created);
 
