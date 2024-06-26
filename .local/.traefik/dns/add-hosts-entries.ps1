@@ -5,6 +5,7 @@ $entries = @(
     "127.0.0.1 traefik.docker.internal",
     "127.0.0.1 weather.docker.internal",
     "127.0.0.1 papercut.docker.internal"
+    "127.0.0.1 whoami.docker.internal"
 )
 
 # Define the path to the hosts file
@@ -14,13 +15,17 @@ $hostsPath = "$env:SystemRoot\System32\drivers\etc\hosts"
 $hostsContent = Get-Content -Path $hostsPath
 
 # Loop through each entry
-foreach ($entry in $entries) {
+foreach ($entry in $entries)
+{
     # Check if the entry already exists
-    if ($hostsContent -notcontains $entry) {
+    if ($hostsContent -notcontains $entry)
+    {
         # Add the entry to the hosts file
         Add-Content -Path $hostsPath -Value "`r`n$entry" -NoNewline
         Write-Output "Added entry: $entry"
-    } else {
+    }
+    else
+    {
         Write-Output "Entry already exists: $entry"
     }
 }
