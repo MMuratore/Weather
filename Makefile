@@ -2,7 +2,7 @@ USER_PATH=$(shell powershell -Command "[Environment]::GetFolderPath('UserProfile
 
 install:
 	dotnet tool update --global dotnet-ef
-	choco install mkcert
+	choco upgrade mkcert
 	mkcert -install
 	@if not exist "$(USER_PATH)/.ssl" mkdir "$(USER_PATH)/.ssl"
 	mkcert -cert-file $(USER_PATH)/.ssl/local-cert.pem -key-file $(USER_PATH)/.ssl/local-key.pem "docker.internal" "*.docker.internal"

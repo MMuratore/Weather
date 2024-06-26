@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.AspNetCore;
 using Weather.SharedKernel.Outbox;
@@ -26,17 +27,13 @@ public static class ServiceCollectionExtensions
     }
 
     public static WebApplicationBuilder AddTransactionalDispatcher<TDbContext>(this WebApplicationBuilder builder,
-        string connectionStringName = "Default")
+        string? connectionString = default)
         where TDbContext : TransactionalDbContext
     {
         var section = builder.Configuration.GetRequiredSection(OutboxMessageProcessorOptions.Section);
         builder.Services.Configure<OutboxMessageProcessorOptions>(section);
         var options = new OutboxMessageProcessorOptions();
         section.Bind(options);
-
-        var connectionString = builder.Configuration.GetConnectionString(connectionStringName) ??
-                               throw new NullReferenceException(
-                                   $"the {connectionStringName.ToLower()} connection string should not be null");
 
         builder.Services.AddQuartz(o =>
         {
@@ -52,7 +49,7 @@ public static class ServiceCollectionExtensions
             {
                 c.UsePostgres(p =>
                 {
-                    p.ConnectionString = connectionString;
+                    p.ConnectionString =  connectionString ?? builder.Configuration.GetConnectionString("Default") ?? throw new NullReferenceException("the default connection string should not be null");;
                     p.TablePrefix = "quartz.";
                 });
                 c.UseNewtonsoftJsonSerializer();
@@ -62,5 +59,20 @@ public static class ServiceCollectionExtensions
         builder.Services.AddQuartzServer(o => { o.WaitForJobsToComplete = true; });
 
         return builder;
+    }
+    
+    public static IServiceCollection RemoveHostedService<T>(this IServiceCollection services) where T : class, IHostedService
+    {
+        // Find the service descriptor for the hosted service
+        var serviceDescriptor = services.FirstOrDefault(
+            d => d.ServiceType == typeof(IHostedService) && d.ImplementationType == typeof(T));
+        
+        // If the service descriptor is found, remove it
+        if (serviceDescriptor != null)
+        {
+            services.Remove(serviceDescriptor);
+        }
+        
+        return services;
     }
 }

@@ -35,3 +35,5 @@ app.UseHealthChecks();
 app.UseFastEndpoint();
 
 app.Run();
+
+public partial class Program;

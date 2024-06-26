@@ -1,5 +1,4 @@
-﻿\connect Weather.Api;
-CREATE SCHEMA keycloak;
+﻿CREATE SCHEMA keycloak;
 CREATE SCHEMA quartz;
 
 CREATE TABLE IF NOT EXISTS quartz.job_details
