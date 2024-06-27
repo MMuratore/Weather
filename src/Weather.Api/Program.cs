@@ -18,7 +18,7 @@ builder.AddAuthorization();
 builder.AddFastEndpoint();
 builder.AddLocalization();
 
-List<Assembly> moduleAssemblies = [typeof(Program).Assembly];
+List<Assembly> moduleAssemblies = [typeof(Weather.Api.Program).Assembly];
 
 builder.AddForecastModule(moduleAssemblies);
 builder.AddNotificationModule(moduleAssemblies);
@@ -36,4 +36,7 @@ app.UseFastEndpoint();
 
 app.Run();
 
-public partial class Program;
+namespace Weather.Api
+{
+    public partial class Program;
+}

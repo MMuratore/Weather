@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using NSwag;
 using NSwag.AspNetCore;
 using Weather.SharedKernel;
+using Weather.SharedKernel.FastEndpoint;
 
 namespace Weather.Api.Configuration.FastEndpoint;
 
@@ -84,6 +85,10 @@ internal static class ConfigureFastEndpoint
         {
             o.Endpoints.RoutePrefix = DefaultRoutePrefix;
             o.Errors.UseProblemDetails();
+            o.Endpoints.Configurator = ep =>
+            {
+                ep.PostProcessor<DomainExceptionPostProcessor>(Order.After);
+            };
         });
 
         if (app.Environment.IsProduction()) return app;

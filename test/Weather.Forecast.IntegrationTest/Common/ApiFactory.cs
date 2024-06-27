@@ -11,7 +11,7 @@ using Weather.SharedKernel;
 
 namespace Weather.Forecast.Integration.Test.Common;
 
-public class ApiFactory : AppFixture<Program>
+public class ApiFactory : AppFixture<Api.Program>
 {
     internal readonly DatabaseFixture DatabaseFixture = new();
 
