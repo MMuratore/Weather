@@ -8,7 +8,7 @@ using Weather.SharedKernel;
 
 namespace Weather.Forecast.Features.Meteorologists.Endpoint;
 
-internal sealed class CreateMeteorologistIntegration(ForecastDbContext dbContext) : EndpointWithoutRequest
+internal sealed class CreateMeteorologist(ForecastDbContext dbContext) : EndpointWithoutRequest
 {
     public override void Configure()
     {

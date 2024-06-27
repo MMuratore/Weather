@@ -11,7 +11,7 @@ using Weather.SharedKernel;
 
 namespace Weather.Forecast.Features.Forecasts.Endpoint;
 
-internal sealed class CreateForecastIntegration(ForecastFactory factory, ForecastDbContext dbContext)
+internal sealed class CreateForecast(ForecastFactory factory, ForecastDbContext dbContext)
     : EndpointWithoutRequest
 {
     public override void Configure()
