@@ -1,13 +1,14 @@
 ﻿using MediatR;
 using Weather.Forecast.Features.Forecasts.Domain;
 using Weather.Forecast.Persistence;
+using Weather.SharedKernel.Event;
 
 namespace Weather.Forecast.Integration;
 
-internal sealed class PublishWeatherForecastCreatedHandler(ForecastDbContext dbContext)
-    : INotificationHandler<WeatherForecastCreated>
+internal sealed class PublishWeatherForecastCreatedHandler(IPublisher publisher, ForecastDbContext dbContext)
+    : DomainEventHandler<WeatherForecastCreated>(publisher, dbContext)
 {
-    public async Task Handle(WeatherForecastCreated notification, CancellationToken cancellationToken)
+    protected override async Task Publish(WeatherForecastCreated notification, CancellationToken cancellationToken)
     {
         await dbContext.AddIntegrationEventAsync(notification.ToIntegrationEvent(), cancellationToken);
     }
