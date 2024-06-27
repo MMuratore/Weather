@@ -1,4 +1,4 @@
-using Weather.SharedKernel.Domain;
+using Weather.SharedKernel.Exception;
 
 namespace Weather.Forecast.Features.Meteorologists.Domain;
 
@@ -6,7 +6,7 @@ internal record BirthDate(DateOnly Date, TimeOnly? Hour = null)
 {
     public DateOnly Date { get; init; } = Date <= DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().Date)
         ? Date
-        : throw new DomainException("birth date must be in the past");
+        : throw new ConflictException("birth date must be in the past");
 
     public int Age => CalculateAge();
 

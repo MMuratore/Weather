@@ -37,6 +37,6 @@ internal sealed class Meteorologist : Entity<MeteorologistId>, IAggregateRoot
     {
         var oldPrestige = Prestige;
         _forecastCount++;
-        if(oldPrestige != Prestige) AddDomainEvent(new MeteorologistPromoted(Id, Prestige));
+        if (oldPrestige != Prestige) AddDomainEvent(new MeteorologistPromoted(Id, Prestige));
     }
 }

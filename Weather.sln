@@ -34,6 +34,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthChecker", ".healthchecker\HealthChecker\HealthChecker.csproj", "{1B53FABC-8071-4D1C-A929-B3E723E90CF7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{681C2F14-8490-4101-BE20-01FC6F484393}"
+	ProjectSection(SolutionItems) = preProject
+		doc\Architectural Decision.MD = doc\Architectural Decision.MD
+		doc\Event handling.MD = doc\Event handling.MD
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

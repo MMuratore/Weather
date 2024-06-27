@@ -13,6 +13,7 @@ internal sealed class LogMeteorologistPromotionHandler(
     {
         var meteorologist = await meteorologistCache.GetByIdAsync(notification.Id);
 
-        logger.LogInformation("{MeteorologistInfo} was promoted to {ForecastNotificationCreationDate}", meteorologist == null ? $"{notification.Id}" : $"{meteorologist.Fullname}",notification.Prestige);
+        logger.LogInformation("{MeteorologistInfo} was promoted to {ForecastNotificationCreationDate}",
+            meteorologist == null ? $"{notification.Id}" : $"{meteorologist.Fullname}", notification.Prestige);
     }
 }

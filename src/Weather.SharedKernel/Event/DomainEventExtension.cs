@@ -6,7 +6,8 @@ namespace Weather.SharedKernel.Event;
 
 internal static class DomainEventExtension
 {
-    internal static async Task PublishDomainEventsAsync(IPublisher publisher, DbContext? dbContext, CancellationToken cancellationToken)
+    internal static async Task PublishDomainEventsAsync(IPublisher publisher, DbContext? dbContext,
+        CancellationToken cancellationToken)
     {
         if (dbContext is null) return;
 

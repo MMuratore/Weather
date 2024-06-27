@@ -19,9 +19,9 @@ participant IntegrationHandler
     EventHandler->>IntegrationEvent: Create Integration Event
     IntegrationEvent->>Outbox: Save to Outbox
     Outbox-->>EventHandler: Confirm Save
-
+    
     Endpoint-->>Client: Send Response
-
+    
     Note over HangfireJob, Outbox: Periodic Job Execution
     HangfireJob->>Outbox: Retrieve Integration Events
     Outbox->>HangfireJob: Return Integration Events
@@ -30,7 +30,7 @@ participant IntegrationHandler
     IntegrationHandler->>ExternalService: Call External Service (optional)
     IntegrationHandler-->>HangfireJob: Confirm Handling
     HangfireJob->>Outbox: Update Event State
-
+    
     Note over HangfireJob, Outbox: Manual Retry Mechanism
     Client->>Outbox: Trigger Manual Retry for Failed Event
     Outbox->>HangfireJob: Retrieve Failed Integration Event
