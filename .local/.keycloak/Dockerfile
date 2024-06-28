@@ -10,7 +10,7 @@ RUN /opt/keycloak/bin/kc.sh build
 
 FROM quay.io/keycloak/keycloak:latest
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
-COPY healthcheck.sh /opt/keycloak/tools/healthcheck.sh
+COPY ./health-check.sh /opt/keycloak/health-check.sh
 
 # Add the provider JAR file to the providers directory
 
