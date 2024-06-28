@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
-using Weather.Forecast.Features.Forecasts;
-using Weather.Forecast.Persistence;
+using Weather.Forecast.Common.Persistence;
+using Weather.Forecast.Feature.Forecast;
 using Weather.SharedKernel;
 
 namespace Weather.Forecast.Integration.Test.Common;

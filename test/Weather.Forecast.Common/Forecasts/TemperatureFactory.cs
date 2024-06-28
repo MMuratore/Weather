@@ -1,6 +1,6 @@
 ﻿using Bogus;
 using Weather.Forecast.Common.Constants;
-using Weather.Forecast.Features.Forecasts.Domain;
+using Weather.Forecast.Feature.Forecast.Domain.ValueObject;
 
 namespace Weather.Forecast.Common.Forecasts;
 

@@ -1,7 +1,8 @@
 ﻿using FluentAssertions;
 using Weather.Forecast.Common;
 using Weather.Forecast.Common.Forecasts;
-using Weather.Forecast.Features.Forecasts.Domain;
+using Weather.Forecast.Feature.Forecast.Domain;
+using Weather.Forecast.Feature.Forecast.Domain.Event;
 
 namespace Weather.Forecast.Domain.Test.Forecasts;
 

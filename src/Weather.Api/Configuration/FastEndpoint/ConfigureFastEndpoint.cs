@@ -85,10 +85,7 @@ internal static class ConfigureFastEndpoint
         {
             o.Endpoints.RoutePrefix = DefaultRoutePrefix;
             o.Errors.UseProblemDetails();
-            o.Endpoints.Configurator = ep =>
-            {
-                ep.PostProcessor<DomainExceptionPostProcessor>(Order.After);
-            };
+            o.Endpoints.Configurator = ep => { ep.PostProcessor<DomainExceptionPostProcessor>(Order.After); };
         });
 
         if (app.Environment.IsProduction()) return app;

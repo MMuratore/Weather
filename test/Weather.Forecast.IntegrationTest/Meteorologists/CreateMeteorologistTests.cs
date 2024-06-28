@@ -2,8 +2,8 @@
 using FastEndpoints;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Weather.Forecast.Features.Meteorologists.Domain;
-using Weather.Forecast.Features.Meteorologists.Endpoint;
+using Weather.Forecast.Feature.Meteorologist.Domain;
+using Weather.Forecast.Feature.Meteorologist.Endpoint;
 using Weather.Forecast.Integration.Test.Common;
 
 namespace Weather.Forecast.Integration.Test.Meteorologists;

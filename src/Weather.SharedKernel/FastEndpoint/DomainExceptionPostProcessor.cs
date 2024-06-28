@@ -12,8 +12,8 @@ public sealed class DomainExceptionPostProcessor : IGlobalPostProcessor
             return;
 
         var domainException = context.ExceptionDispatchInfo.SourceException as DomainException;
-        if(domainException is null) context.ExceptionDispatchInfo.Throw();
-        
+        if (domainException is null) context.ExceptionDispatchInfo.Throw();
+
         context.MarkExceptionAsHandled();
 
         var status = domainException switch
@@ -25,7 +25,7 @@ public sealed class DomainExceptionPostProcessor : IGlobalPostProcessor
             ValidationException => HttpStatusCode.BadRequest,
             _ => HttpStatusCode.InternalServerError
         };
-        
+
         await context.HttpContext.Response.SendAsync(domainException.Message, (int)status, cancellation: ct);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Weather.Forecast.Features.Forecasts.Domain;
-using Weather.Forecast.Persistence;
+using Weather.Forecast.Common.Persistence;
+using Weather.Forecast.Feature.Forecast.Domain.Event;
 using Weather.SharedKernel.Event;
 
 namespace Weather.Forecast.Integration;

@@ -36,7 +36,8 @@ app.UseFastEndpoint();
 
 app.Run();
 
+
 namespace Weather.Api
 {
-    public partial class Program;
+    public class Program;
 }

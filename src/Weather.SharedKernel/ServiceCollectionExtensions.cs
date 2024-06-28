@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.AspNetCore;
+using Weather.SharedKernel.Event;
 using Weather.SharedKernel.Outbox;
 using Weather.SharedKernel.Persistence;
 
@@ -65,11 +66,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection RemoveHostedService<T>(this IServiceCollection services)
         where T : class, IHostedService
     {
-        // Find the service descriptor for the hosted service
         var serviceDescriptor = services.FirstOrDefault(
             d => d.ServiceType == typeof(IHostedService) && d.ImplementationType == typeof(T));
 
-        // If the service descriptor is found, remove it
         if (serviceDescriptor != null) services.Remove(serviceDescriptor);
 
         return services;

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Weather.Forecast.Contract;
+using Weather.Notification.Common.Cache;
 
 namespace Weather.Notification.Integration;
 

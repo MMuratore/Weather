@@ -5,7 +5,7 @@ using Weather.SharedKernel.Outbox;
 
 namespace Weather.SharedKernel.Persistence;
 
-public class TransactionalDbContext : BaseDbContext
+public abstract class TransactionalDbContext : BaseDbContext
 {
     public TransactionalDbContext(DbContextOptions options,
         PublishDomainEventsInterceptor? domainEventsInterceptor) : base(options, domainEventsInterceptor)
