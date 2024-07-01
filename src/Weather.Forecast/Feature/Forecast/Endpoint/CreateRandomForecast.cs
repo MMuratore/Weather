@@ -4,31 +4,28 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Weather.Forecast.Common.Persistence;
 using Weather.Forecast.Feature.Forecast.Domain;
-using Weather.Forecast.Feature.Forecast.Domain.ValueObject;
 using Weather.Forecast.Feature.Forecast.Endpoint.Response;
 using Weather.Forecast.Feature.Meteorologist.Endpoint;
 using Weather.SharedKernel;
 
 namespace Weather.Forecast.Feature.Forecast.Endpoint;
 
-internal sealed class CreateForecast(ForecastDbContext dbContext)
-    : Endpoint<CreateForecastRequest, ForecastResponse>
+internal sealed class CreateRandomForecast(ForecastFactory factory, ForecastDbContext dbContext)
+    : EndpointWithoutRequest
 {
     public override void Configure()
     {
-        Post("/forecasts");
+        Post("/forecasts/random");
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
-        Summary(s => { s.Summary = "generate a forecast"; });
+        Summary(s => { s.Summary = "generate a random forecast"; });
     }
 
-    public override async Task HandleAsync(CreateForecastRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
         var meteorologist = dbContext.Set<Meteorologist.Domain.Meteorologist>().AsNoTracking()
             .OrderBy(x => Guid.NewGuid()).FirstOrDefault();
 
-        var temperature = new Temperature(req.Celsius);
-        var date = DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().DateTime);
-        var weatherForecast = WeatherForecast.Create(date, temperature);
+        var weatherForecast = factory.Create(meteorologistId: meteorologist?.Id).First();
 
         await dbContext.Set<WeatherForecast>().AddAsync(weatherForecast, ct);
         await dbContext.SaveChangesAsync(ct);
@@ -37,5 +34,3 @@ internal sealed class CreateForecast(ForecastDbContext dbContext)
             weatherForecast.ToResponse(meteorologist?.ToResponse()), cancellation: ct);
     }
 }
-
-internal sealed record CreateForecastRequest(decimal Celsius);

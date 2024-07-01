@@ -9,13 +9,13 @@ using Weather.Forecast.Integration.Test.Common;
 
 namespace Weather.Forecast.Integration.Test.Forecasts;
 
-public class CreateForecastTests(ApiFactory apiFactory) : BaseIntegrationTest(apiFactory)
+public class CreateRandomForecastTests(ApiFactory apiFactory) : BaseIntegrationTest(apiFactory)
 {
     [Fact]
     public async Task CreateForecast_WhenSuccess_ShouldHaveAWeatherForecast()
     {
         //Act
-        var (response, result) = await App.Client.POSTAsync<CreateForecast, ForecastResponse>();
+        var (response, result) = await App.Client.POSTAsync<CreateRandomForecast, ForecastResponse>();
 
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -32,7 +32,7 @@ public class CreateForecastTests(ApiFactory apiFactory) : BaseIntegrationTest(ap
     public async Task CreateForecast_WhenSuccess_ShouldHaveAnotherWeatherForecast()
     {
         //Act
-        var (response, result) = await App.Client.POSTAsync<CreateForecast, ForecastResponse>();
+        var (response, result) = await App.Client.POSTAsync<CreateRandomForecast, ForecastResponse>();
 
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.Created);
