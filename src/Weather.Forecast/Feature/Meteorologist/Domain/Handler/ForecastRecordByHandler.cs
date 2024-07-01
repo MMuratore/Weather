@@ -18,7 +18,7 @@ internal sealed class ForecastRecordByHandler(IPublisher publisher, ForecastDbCo
         var meteorologist = await dbContext.Set<Meteorologist>()
             .FirstOrDefaultAsync(x => x.Id == notification.MeteorologistId, cancellationToken);
 
-        if (meteorologist is null) throw new NotFoundException(MeteorologistError.MeteorologistNotFound);
+        if (meteorologist is null) throw new NotFoundException(nameof(notification.MeteorologistId),MeteorologistError.MeteorologistNotFound);
 
         meteorologist.IncrementForecast();
     }

@@ -1,6 +1,6 @@
-@Weather.Api_HostAddress = https://weather.docker.localhost
+@Weather.Api_HostAddress = https://weather.docker.internal/api
 
-GET {{Weather.Api_HostAddress}}/weatherforecast
+GET {{Weather.Api_HostAddress}}/forecasts/random
 Accept: application/json
 
 ###

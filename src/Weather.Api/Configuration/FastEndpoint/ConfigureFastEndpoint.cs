@@ -84,8 +84,20 @@ internal static class ConfigureFastEndpoint
         app.UseFastEndpoints(o =>
         {
             o.Endpoints.RoutePrefix = DefaultRoutePrefix;
-            o.Errors.UseProblemDetails();
-            o.Endpoints.Configurator = ep => { ep.PostProcessor<DomainExceptionPostProcessor>(Order.After); };
+            o.Errors.UseProblemDetails(
+                x =>
+                {
+                    x.AllowDuplicateErrors = false;
+                    x.IndicateErrorCode = true;
+                    x.TypeValue = "https://www.rfc-editor.org/rfc/rfc7231#section-6.5.1";
+                    x.TitleValue = "One or more validation errors occurred.";
+                    x.TitleTransformer = pd => pd.Status switch
+                    {
+                        404 => "Not Found",
+                        _ => "One or more errors occurred!"
+                    };
+                    o.Endpoints.Configurator = ep => { ep.PostProcessor<ExceptionPostProcessor>(Order.After); };
+                });
         });
 
         if (app.Environment.IsProduction()) return app;

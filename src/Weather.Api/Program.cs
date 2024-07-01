@@ -26,7 +26,6 @@ builder.AddMediatR(moduleAssemblies);
 
 var app = builder.Build();
 
-app.UseDefaultExceptionHandler();
 app.UseRouting();
 app.UseRequestLocalization();
 app.UseAuthentication();

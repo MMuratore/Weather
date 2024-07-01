@@ -2,15 +2,27 @@
 
 public abstract class DomainException : System.Exception
 {
+    public string? Property;
+    public string? Code;
+
     public DomainException()
     {
     }
-
-    public DomainException(string message) : base(message)
+    
+    public DomainException(string code) : base(code)
     {
+        Code = code;
+    }
+    
+    public DomainException(string property, string code) : base(code)
+    {
+        Property = property;
+        Code = code;
     }
 
-    public DomainException(string message, System.Exception inner) : base(message, inner)
+    public DomainException(string property, string code, System.Exception inner) : base(code, inner)
     {
+        Property = property;
+        Code = code;
     }
 }

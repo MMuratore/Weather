@@ -9,7 +9,7 @@ internal sealed record Temperature(decimal Celsius)
 
     public decimal Celsius { get; init; } = Celsius > AbsoluteZero
         ? Celsius
-        : throw new ConflictException(TemperatureError.TemperatureCannotBeUnderAbsoluteZero);
+        : throw new ConflictException(nameof(Celsius),TemperatureError.TemperatureCannotBeUnderAbsoluteZero);
 
     public decimal Fahrenheit => 32m + Celsius * 9m / 5m;
 }

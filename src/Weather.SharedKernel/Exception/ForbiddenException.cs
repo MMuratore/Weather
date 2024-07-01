@@ -6,11 +6,20 @@ public sealed class ForbiddenException : DomainException
     {
     }
 
-    public ForbiddenException(string message) : base(message)
+    public ForbiddenException(string code) : base(code)
     {
+        Code = code;
+    }
+    
+    public ForbiddenException(string property, string code) : base(property, code)
+    {
+        Property = property;
+        Code = code;
     }
 
-    public ForbiddenException(string message, System.Exception inner) : base(message, inner)
+    public ForbiddenException(string property, string code, System.Exception inner) : base(property, code, inner)
     {
+        Property = property;
+        Code = code;
     }
 }

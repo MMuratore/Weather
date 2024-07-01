@@ -6,11 +6,20 @@ public sealed class UnauthorizedException : DomainException
     {
     }
 
-    public UnauthorizedException(string message) : base(message)
+    public UnauthorizedException(string code) : base(code)
     {
+        Code = code;
+    }
+    
+    public UnauthorizedException(string property, string code) : base(property, code)
+    {
+        Property = property;
+        Code = code;
     }
 
-    public UnauthorizedException(string message, System.Exception inner) : base(message, inner)
+    public UnauthorizedException(string property, string code, System.Exception inner) : base(property, code, inner)
     {
+        Property = property;
+        Code = code;
     }
 }

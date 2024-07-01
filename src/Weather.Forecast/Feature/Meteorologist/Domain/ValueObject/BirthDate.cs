@@ -7,7 +7,7 @@ internal record BirthDate(DateOnly Date, TimeOnly? Hour = null)
 {
     public DateOnly Date { get; init; } = Date <= DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().Date)
         ? Date
-        : throw new ConflictException(BirthDateError.BirthDateCannotBeInFuture);
+        : throw new ConflictException(nameof(Date),BirthDateError.BirthDateCannotBeInFuture);
 
     public int Age => CalculateAge();
 

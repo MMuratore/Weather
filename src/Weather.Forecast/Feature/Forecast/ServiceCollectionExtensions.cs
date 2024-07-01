@@ -6,7 +6,7 @@ namespace Weather.Forecast.Feature.Forecast;
 
 internal static class ServiceCollectionExtensions
 {
-    public static WebApplicationBuilder AddForecastServices(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddForecastFeature(this WebApplicationBuilder builder)
     {
         builder.Services.AddSingleton<ForecastSeedHealthCheck>();
         builder.Services.AddHealthChecks().AddCheck<ForecastSeedHealthCheck>(nameof(ForecastSeedHealthCheck));

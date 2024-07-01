@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
         builder.AddPersistence();
         builder.AddTransactionalDispatcher<ForecastDbContext>();
 
-        builder.AddForecastServices();
+        builder.AddForecastFeature();
 
         return builder;
     }
