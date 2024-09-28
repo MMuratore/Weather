@@ -14,7 +14,7 @@ public class TemperatureTest : BaseUnitTest
         //Arrange
         var summary = Enum.Parse<Summary>(value);
         var celsius = Faker.TemperatureFromSummary(summary);
-
+        
         //Act
         var temperature = new Temperature(celsius);
 

@@ -9,7 +9,7 @@ internal sealed class ReadThroughMeteorologistCache(
     IMediator mediator,
     ILogger<ReadThroughMeteorologistCache> logger) : IMeteorologistCache
 {
-    public async Task<Meteorologist?> GetByIdAsync(Guid? meteorologistId)
+    public async Task<MeteorologistFullName?> GetByIdAsync(Guid? meteorologistId)
     {
         if (meteorologistId is null) return null;
 
@@ -26,9 +26,9 @@ internal sealed class ReadThroughMeteorologistCache(
         logger.LogInformation(
             "meteorologist '{MeteorologistId}' successfully fetch from source. hydrating it into cache",
             meteorologistId);
-        await inMemoryCahce.StoreAsync(new Meteorologist(meteorologistFullname.Id, meteorologistFullname.Fullname));
+        await inMemoryCahce.StoreAsync(new MeteorologistFullName(meteorologistFullname.Id, meteorologistFullname.Fullname));
         return meteorologist;
     }
 
-    public Task StoreAsync(Meteorologist meteorologist) => inMemoryCahce.StoreAsync(meteorologist);
+    public Task StoreAsync(MeteorologistFullName meteorologistFullName) => inMemoryCahce.StoreAsync(meteorologistFullName);
 }

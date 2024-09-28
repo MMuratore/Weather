@@ -6,18 +6,18 @@ namespace Weather.Notification.Common.Cache;
 internal sealed class InMemoryMeteorologistCache(IMemoryCache memoryCache, ILogger<InMemoryMeteorologistCache> logger)
     : IMeteorologistCache
 {
-    public Task<Meteorologist?> GetByIdAsync(Guid? meteorologistId)
+    public Task<MeteorologistFullName?> GetByIdAsync(Guid? meteorologistId)
     {
         if (meteorologistId is null)
-            return Task.FromResult<Meteorologist?>(null);
+            return Task.FromResult<MeteorologistFullName?>(null);
 
         logger.LogInformation("retrieving meteorologist '{MeteorologistId}' from cache", meteorologistId);
-        return Task.FromResult(memoryCache.Get<Meteorologist>(meteorologistId));
+        return Task.FromResult(memoryCache.Get<MeteorologistFullName>(meteorologistId));
     }
 
-    public Task StoreAsync(Meteorologist meteorologist)
+    public Task StoreAsync(MeteorologistFullName meteorologistFullName)
     {
-        memoryCache.Set(meteorologist.Id, meteorologist);
+        memoryCache.Set(meteorologistFullName.Id, meteorologistFullName);
         return Task.CompletedTask;
     }
 }

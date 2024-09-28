@@ -1,3 +1,3 @@
 ﻿namespace Weather.Notification;
 
-public record Meteorologist(Guid Id, string Fullname);
+public record MeteorologistFullName(Guid Id, string Fullname);

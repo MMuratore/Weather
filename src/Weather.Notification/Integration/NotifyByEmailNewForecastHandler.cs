@@ -30,7 +30,7 @@ internal sealed class NotifyByEmailNewForecastHandler(
             response.ErrorMessages);
     }
 
-    private static string ForecastNotificationBody(WeatherForecastCreated weatherForecast, Meteorologist? meteorologist)
+    private static string ForecastNotificationBody(WeatherForecastCreated weatherForecast, MeteorologistFullName? meteorologist)
     {
         var publishBy = meteorologist is null ? "" : $" by {meteorologist.Fullname}";
         return $"A {weatherForecast.Summary} forecast was published at {weatherForecast.DateCreated}{publishBy}";

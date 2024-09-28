@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using FastEndpoints;
-using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Weather.SharedKernel.Exception;
 

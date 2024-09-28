@@ -2,7 +2,7 @@
 
 internal interface IMeteorologistCache
 {
-    Task<Meteorologist?> GetByIdAsync(Guid? meteorologistId);
+    Task<MeteorologistFullName?> GetByIdAsync(Guid? meteorologistId);
 
-    Task StoreAsync(Meteorologist meteorologist);
+    Task StoreAsync(MeteorologistFullName meteorologistFullName);
 }

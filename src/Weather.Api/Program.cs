@@ -1,5 +1,4 @@
 using System.Reflection;
-using FastEndpoints;
 using Weather.Api.Configuration.FastEndpoint;
 using Weather.Api.Configuration.HealthCheck;
 using Weather.Api.Configuration.Localization;
