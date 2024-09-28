@@ -1,0 +1,105 @@
+﻿services:
+  weather.api:
+    image: weather.api
+    profiles:
+      - backend
+    build:
+      context: .
+      dockerfile: src/Weather.Api/Dockerfile
+    volumes:
+      - $APPDATA/Microsoft/UserSecrets/2a6ca895-690c-4a46-a359-c9602729ce60:/home/app/.microsoft/usersecrets/2a6ca895-690c-4a46-a359-c9602729ce60
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.weather.loadbalancer.server.port=8080"
+      - "traefik.http.routers.weather.rule=Host(`weather.docker.internal`)"
+      - "traefik.http.routers.weather.tls=true"
+  
+  traefik:
+    image: traefik:v2.11
+    profiles:
+      - infra
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 80:80
+      - 443:443
+      - 5432:5432
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./.local/.traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./.local/.traefik/config.yml:/etc/traefik/config.yml:ro
+      - ~/.ssl:/etc/traefik/ssl:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik=true"
+
+  aspire:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:8.0.0
+    profiles:
+      - infra
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.aspire.loadbalancer.server.port=18888"
+      - "traefik.http.routers.aspire.rule=Host(`aspire.docker.internal`)"
+      - "traefik.http.routers.aspire.tls=true"
+
+  postgres:
+    image: postgres:latest
+    profiles:
+      - infra
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./.local/.postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 15s
+      timeout: 2s
+      retries: 5
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.postgres.entrypoints=postgres"
+      - "traefik.http.services.postgres.loadbalancer.server.port=5432"
+      - "traefik.tcp.routers.postgres.rule=HostSNI(`*`)"
+
+  keycloak:
+    image: ${REGISTRY:-weather}/keycloak:${PLATFORM:-linux}-${TAG:-latest}
+    profiles:
+      - infra
+    build: ./.local/.keycloak
+    command: start --import-realm
+    healthcheck:
+      test: "bash /opt/keycloak/health-check.sh"
+      interval: 6s
+      timeout: 10s
+      retries: 20
+    volumes:
+      - ./.local/.keycloak/realm-config/:/opt/keycloak/data/import/
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.keycloak.loadbalancer.server.port=8080"
+      - "traefik.http.routers.keycloak.rule=Host(`keycloak.docker.internal`)"
+      - "traefik.http.routers.keycloak.tls=true"
+
+  papercut:
+    image: changemakerstudiosus/papercut-smtp
+    profiles:
+      - infra
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.papercut.loadbalancer.server.port=80"
+      - "traefik.http.routers.papercut.rule=Host(`papercut.docker.internal`)"
+      - "traefik.http.routers.papercut.tls=true"
+
+volumes:
+  postgres:

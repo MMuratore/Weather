@@ -35,6 +35,14 @@ public class ApiFactory : AppFixture<Api.Program>
     {
         a.UseSetting("ConnectionStrings:Default", DatabaseFixture.ConnectionString);
         a.UseSetting("ConnectionStrings:Forecast", DatabaseFixture.ConnectionString);
+        a.UseSetting("Logging:LogLevel:Default", "Information");
+        a.UseSetting("Logging:LogLevel:Microsoft.AspNetCore", "Warning");
+        a.UseSetting("OpenWeatherMap:BaseUrl", "https://api.openweathermap.org/data/2.5/");
+        a.UseSetting("OutboxMessageProcessor:Period", "00:00:15");
+        a.UseSetting("OutboxMessageProcessor:MaximumConcurrentMessage", null);
+        a.UseSetting("Email:DefaultFrom", "random@acme.com");
+        a.UseSetting("Email:Smtp:Host", "papercut");
+        a.UseSetting("Email:Smtp:Port", "25");
     }
 
     protected override void ConfigureServices(IServiceCollection s)
