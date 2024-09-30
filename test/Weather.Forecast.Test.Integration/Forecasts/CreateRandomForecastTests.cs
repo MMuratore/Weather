@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Weather.Forecast.Feature.Forecast.Domain;
 using Weather.Forecast.Feature.Forecast.Endpoint;
 using Weather.Forecast.Feature.Forecast.Endpoint.Response;
-using Weather.Forecast.Integration.Test.Common;
+using Weather.Forecast.Test.Integration.Common;
 
-namespace Weather.Forecast.Integration.Test.Forecasts;
+namespace Weather.Forecast.Test.Integration.Forecasts;
 
 public class CreateRandomForecastTests(ApiFactory apiFactory) : BaseIntegrationTest(apiFactory)
 {

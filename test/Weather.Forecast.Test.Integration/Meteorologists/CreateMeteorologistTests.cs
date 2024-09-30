@@ -4,9 +4,9 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Weather.Forecast.Feature.Meteorologist.Domain;
 using Weather.Forecast.Feature.Meteorologist.Endpoint;
-using Weather.Forecast.Integration.Test.Common;
+using Weather.Forecast.Test.Integration.Common;
 
-namespace Weather.Forecast.Integration.Test.Meteorologists;
+namespace Weather.Forecast.Test.Integration.Meteorologists;
 
 public class CreateMeteorologistTests(ApiFactory apiFactory) : BaseIntegrationTest(apiFactory)
 {
@@ -21,9 +21,9 @@ public class CreateMeteorologistTests(ApiFactory apiFactory) : BaseIntegrationTe
 
         var context = App.CreateDbContext();
 
-        var meteorologist = await context.Set<Meteorologist>().FirstAsync();
+        var meteorologist = await EntityFrameworkQueryableExtensions.FirstAsync(context.Set<Meteorologist>());
 
-        meteorologist.Should().NotBeNull();
-        meteorologist.Name.Fullname.Should().Be(result.Fullname);
+        AssertionExtensions.Should((object)meteorologist).NotBeNull();
+        AssertionExtensions.Should((string)meteorologist.Name.Fullname).Be(result.Fullname);
     }
 }

@@ -14,6 +14,8 @@ internal static class ServiceCollectionExtensions
         builder.Services.AddHostedService<ForecastSeederHostedService>();
         builder.Services.AddSingleton<ForecastFactory>();
 
+        builder.AddApiVersionSets();
+        
         return builder;
     }
 }

@@ -9,7 +9,7 @@ using Weather.Forecast.Common.Persistence;
 using Weather.Forecast.Feature.Forecast;
 using Weather.SharedKernel;
 
-namespace Weather.Forecast.Integration.Test.Common;
+namespace Weather.Forecast.Test.Integration.Common;
 
 public class ApiFactory : AppFixture<Api.Program>
 {

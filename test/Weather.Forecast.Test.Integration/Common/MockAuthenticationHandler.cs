@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Weather.Forecast.Integration.Test.Common;
+namespace Weather.Forecast.Test.Integration.Common;
 
 internal sealed class MockAuthenticationHandler(
     IOptionsMonitor<AuthenticationSchemeOptions> options,

@@ -1,6 +1,6 @@
 ﻿using FastEndpoints.Testing;
 
-namespace Weather.Forecast.Integration.Test.Common;
+namespace Weather.Forecast.Test.Integration.Common;
 
 [Collection(ApiFactoryCollection.Name)]
 public abstract class BaseIntegrationTest(ApiFactory app) : TestBase

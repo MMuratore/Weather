@@ -4,10 +4,13 @@
         <TargetFramework>net8.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <UserSecretsId>2a6ca895-690c-4a46-a359-c9602729ce60</UserSecretsId>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Weather.Forecast\Weather.Forecast.csproj"/>
+        <ProjectReference Include="..\Weather.Forecast\Weather.Forecast.csproj" />
         <ProjectReference Include="..\Weather.Notification\Weather.Notification.csproj"/>
         <ProjectReference Include="..\Weather.SharedKernel\Weather.SharedKernel.csproj"/>
     </ItemGroup>
@@ -33,13 +36,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
+        <InternalsVisibleTo Include="Weather.Forecast.IntegrationTest"/>
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="Weather.Forecast.IntegrationTest"/>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

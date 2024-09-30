@@ -13,7 +13,7 @@ internal sealed class GetForecast(ForecastDbContext dbContext) : Endpoint<GetFor
     public override void Configure()
     {
         Get("/forecasts/{id:guid}");
-        Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
+        Options(o => o.WithVersionSet(ForecastApiVersionSet.ForecastSet).MapToApiVersion(DefaultApiVersionSet.DefaultApiVersion));
         Summary(s => { s.Summary = "get a forecast by id"; });
     }
 

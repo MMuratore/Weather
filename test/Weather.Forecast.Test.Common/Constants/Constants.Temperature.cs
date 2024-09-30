@@ -1,4 +1,4 @@
-﻿namespace Weather.Forecast.Common.Constants;
+﻿namespace Weather.Forecast.Test.Common.Constants;
 
 public static class TestConstants
 {

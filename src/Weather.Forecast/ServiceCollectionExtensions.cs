@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FastEndpoints.AspVersioning;
 using Microsoft.AspNetCore.Builder;
 using Weather.Forecast.Common.HttpClient;
 using Weather.Forecast.Common.Persistence;
@@ -13,6 +14,8 @@ public static class ServiceCollectionExtensions
         List<Assembly> moduleAssemblies)
     {
         moduleAssemblies.Add(typeof(ServiceCollectionExtensions).Assembly);
+
+        builder.AddApiVersionSets();
 
         builder.AddHttpClient();
         builder.AddPersistence();

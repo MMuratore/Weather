@@ -1,4 +1,5 @@
-﻿namespace Weather.Forecast.Feature.Meteorologist.Domain.Error;
+﻿
+namespace Weather.Forecast.Feature.Meteorologist.Domain.Error;
 
 internal static class BirthDateError
 {

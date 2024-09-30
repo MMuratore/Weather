@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
-using Weather.Forecast.Common;
-using Weather.Forecast.Common.Forecasts;
 using Weather.Forecast.Feature.Forecast.Domain.ValueObject;
+using Weather.Forecast.Test.Common;
+using Weather.Forecast.Test.Common.Forecasts;
 
-namespace Weather.Forecast.Domain.Test.Forecasts;
+namespace Weather.Forecast.Test.Domain.Forecasts;
 
 public class TemperatureTest : BaseUnitTest
 {

@@ -13,7 +13,7 @@ internal sealed class GetForecastFrom(OpenWeatherMapClient client)
     public override void Configure()
     {
         Get("/forecasts");
-        Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
+        Options(o => o.WithVersionSet(ForecastApiVersionSet.ForecastSet).MapToApiVersion(DefaultApiVersionSet.DefaultApiVersion));
         Summary(s => { s.Summary = "get forecast data from a city"; });
     }
 

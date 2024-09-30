@@ -4,10 +4,9 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
-        <RootNamespace>Weather.Forecast.Integration.Test</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -33,6 +32,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\Weather.Api\Weather.Api.csproj"/>
+        <ProjectReference Include="..\..\src\Weather.Forecast\Weather.Forecast.csproj" />
     </ItemGroup>
 
 </Project>

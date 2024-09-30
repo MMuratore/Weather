@@ -1,8 +1,8 @@
 ﻿using Bogus;
-using Weather.Forecast.Common.Constants;
 using Weather.Forecast.Feature.Forecast.Domain.ValueObject;
+using Weather.Forecast.Test.Common.Constants;
 
-namespace Weather.Forecast.Common.Forecasts;
+namespace Weather.Forecast.Test.Common.Forecasts;
 
 internal static class TemperatureFactory
 {

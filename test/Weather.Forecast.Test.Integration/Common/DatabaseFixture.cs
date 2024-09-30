@@ -3,7 +3,7 @@ using Respawn;
 using Respawn.Graph;
 using Testcontainers.PostgreSql;
 
-namespace Weather.Forecast.Integration.Test.Common;
+namespace Weather.Forecast.Test.Integration.Common;
 
 internal sealed class DatabaseFixture : IAsyncLifetime
 {

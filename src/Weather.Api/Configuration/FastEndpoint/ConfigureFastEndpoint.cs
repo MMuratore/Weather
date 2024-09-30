@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NSwag;
 using NSwag.AspNetCore;
+using Weather.Forecast;
 using Weather.SharedKernel;
 using Weather.SharedKernel.FastEndpoint;
 
@@ -29,17 +30,15 @@ internal static class ConfigureFastEndpoint
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
-
-        VersionSets.CreateApi(WeatherApiVersion.Name, v => v.HasApiVersion(WeatherApiVersion.DefaultApiVersion));
-
+        
         builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(o =>
             o.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
 
         builder.Services.AddVersioning(o =>
         {
-            o.DefaultApiVersion = WeatherApiVersion.DefaultApiVersion;
+            o.DefaultApiVersion = DefaultApiVersionSet.DefaultApiVersion;
             o.AssumeDefaultVersionWhenUnspecified = true;
-            o.ApiVersionReader = new HeaderApiVersionReader(WeatherApiVersion.RequiredApiVersionHeaderName);
+            o.ApiVersionReader = new HeaderApiVersionReader(DefaultApiVersionSet.RequiredApiVersionHeaderName);
         });
 
         var options = new SwaggerOAuthOptions();
@@ -56,7 +55,7 @@ internal static class ConfigureFastEndpoint
             {
                 s.DocumentName = "v1";
                 s.Title = "Weather API";
-                s.ApiVersion(WeatherApiVersion.DefaultApiVersion);
+                s.ApiVersion(DefaultApiVersionSet.DefaultApiVersion);
                 s.AddAuth("oidc", new OpenApiSecurityScheme
                 {
                     Type = OpenApiSecuritySchemeType.OAuth2,
