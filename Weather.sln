@@ -23,21 +23,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Notification", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Forecast.Contract", "src\Weather.Forecast.Contract\Weather.Forecast.Contract.csproj", "{2A4609BE-C8E8-4B59-BE88-8DE88C54F92B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Forecast.UnitTest", "test\Weather.Forecast.UnitTest\Weather.Forecast.UnitTest.csproj", "{FA908AA1-2F8C-4658-990D-27EE5710A8A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Forecast.Test.Domain", "test\Weather.Forecast.Test.Domain\Weather.Forecast.Test.Domain.csproj", "{FA908AA1-2F8C-4658-990D-27EE5710A8A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Forecast.IntegrationTest", "test\Weather.Forecast.IntegrationTest\Weather.Forecast.IntegrationTest.csproj", "{CDFD21BB-8DD3-4CCE-8D08-F5B9B22C73FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Forecast.Test.Integration", "test\Weather.Forecast.Test.Integration\Weather.Forecast.Test.Integration.csproj", "{CDFD21BB-8DD3-4CCE-8D08-F5B9B22C73FF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{AB1C0B8C-3B20-466E-B3A5-4182EC492F6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Forecast.Common", "test\Weather.Forecast.Common\Weather.Forecast.Common.csproj", "{E3240EC4-6446-40F2-8C28-8F78FD18CCAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Forecast.Test.Common", "test\Weather.Forecast.Test.Common\Weather.Forecast.Test.Common.csproj", "{E3240EC4-6446-40F2-8C28-8F78FD18CCAC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{681C2F14-8490-4101-BE20-01FC6F484393}"
-	ProjectSection(SolutionItems) = preProject
-		doc\Architectural Decision.MD = doc\Architectural Decision.MD
-		doc\Event handling.MD = doc\Event handling.MD
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{95D0CACE-69A7-4828-94B4-834D0B77B18A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{B88E33C3-7F01-4080-9B8C-5A53E40D6769}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,7 +83,6 @@ Global
 		{FA908AA1-2F8C-4658-990D-27EE5710A8A5} = {AB1C0B8C-3B20-466E-B3A5-4182EC492F6A}
 		{CDFD21BB-8DD3-4CCE-8D08-F5B9B22C73FF} = {AB1C0B8C-3B20-466E-B3A5-4182EC492F6A}
 		{E3240EC4-6446-40F2-8C28-8F78FD18CCAC} = {AB1C0B8C-3B20-466E-B3A5-4182EC492F6A}
-		{681C2F14-8490-4101-BE20-01FC6F484393} = {3DA85803-20A5-426C-ABAC-A8E625157F18}
-		{2FD04B93-776D-4683-8017-A51D1228DCB4} = {95D0CACE-69A7-4828-94B4-834D0B77B18A}
+		{2FD04B93-776D-4683-8017-A51D1228DCB4} = {B88E33C3-7F01-4080-9B8C-5A53E40D6769}
 	EndGlobalSection
 EndGlobal

@@ -8,15 +8,7 @@ internal sealed record ForecastResponse(
     string Date,
     Temperature Temperature,
     Summary? Summary,
-    MeteorologistResponse? Meteorologist = null)
-{
-    /// <example>Wednesday, May 16, 2001</example>
-    public string Date { get; init; } = Date;
-
-    public Temperature Temperature { get; init; } = Temperature;
-    public Summary? Summary { get; init; } = Summary;
-    public MeteorologistResponse? Meteorologist { get; init; } = Meteorologist;
-}
+    MeteorologistResponse? Meteorologist = null);
 
 internal static class ForecastResponseMapper
 {

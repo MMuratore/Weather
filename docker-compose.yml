@@ -5,7 +5,6 @@
       Logging__LogLevel__Default: Information
       Logging__LogLevel__Microsoft.AspNetCore: Warning
       OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
-      OTEL_EXPORTER_OTLP_HEADERS: x-otlp-api-key=${OTLP_PRIMARYAPIKEY}
       Authentication__Schemes__Bearer__Authority: http://keycloak:8080/realms/weather
       Authentication__Schemes__Bearer__RequireHttpsMetadata: false
       Authentication__Schemes__Bearer__ValidIssuer: https://keycloak.docker.internal/realms/weather
@@ -16,15 +15,14 @@
       Authentication__Swagger__Scopes__0: openid
       OpenWeatherMap__BaseUrl: https://api.openweathermap.org/data/2.5/
       OutboxMessageProcessor__Period: 00:00:15
-      OutboxMessageProcessor__MaximumConcurrentMessage: null
+      OutboxMessageProcessor__MaximumConcurrentMessage: 1000
       Email__DefaultFrom: random@acme.com
       Email__Smtp__Host: papercut
       Email__Smtp__Port: 25
 
   aspire:
     environment:
-      DASHBOARD__OTLP__AUTHMODE: ApiKey
-      DASHBOARD__OTLP__PRIMARYAPIKEY: ${OTLP_PRIMARYAPIKEY}
+      DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS: true
 
   postgres:
     environment:

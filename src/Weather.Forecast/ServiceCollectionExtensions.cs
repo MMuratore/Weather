@@ -4,6 +4,7 @@ using Weather.Forecast.Common.Authorization;
 using Weather.Forecast.Common.HttpClient;
 using Weather.Forecast.Common.Persistence;
 using Weather.Forecast.Feature.Forecast;
+using Weather.Forecast.Feature.Meteorologist;
 using Weather.SharedKernel;
 
 namespace Weather.Forecast;
@@ -14,13 +15,13 @@ public static class ServiceCollectionExtensions
         List<Assembly> moduleAssemblies)
     {
         moduleAssemblies.Add(typeof(ServiceCollectionExtensions).Assembly);
-
-        builder.AddHttpClient();
-        builder.AddPersistence(); 
+        
+        builder.AddPersistence();
         builder.AddTransactionalDispatcher<ForecastDbContext>();
         builder.AddForecastAuthorizationPolicy();
         
         builder.AddForecastFeature();
+        builder.AddMeteorologistFeature();
         
         return builder;
     }

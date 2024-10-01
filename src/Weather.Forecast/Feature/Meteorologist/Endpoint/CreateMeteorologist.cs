@@ -13,7 +13,7 @@ internal sealed class CreateMeteorologist(ForecastDbContext dbContext) : Endpoin
     public override void Configure()
     {
         Post("/meteorologists/random");
-        Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
+        Options(o => o.WithVersionSet(MeteorologistApiVersionSet.MeteorologistSet).MapToApiVersion(DefaultApiVersionSet.DefaultApiVersion));
         Summary(s => { s.Summary = "generate a random meteorologist"; });
     }
 

@@ -2,8 +2,9 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <NoWarn>CS1591</NoWarn>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,11 +12,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Bogus" Version="35.5.1"/>
-        <PackageReference Include="FastEndpoints" Version="5.26.0"/>
-        <PackageReference Include="FastEndpoints.AspVersioning" Version="5.26.0"/>
-        <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.6.0"/>
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
+        <PackageReference Include="Bogus" Version="35.6.1" />
+        <PackageReference Include="FastEndpoints" Version="5.29.0" />
+        <PackageReference Include="FastEndpoints.AspVersioning" Version="5.29.0" />
+        <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.9.1" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.8" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,13 +25,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Common\Persistence\Migrations\"/>
-        <Folder Include="Feature\"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <InternalsVisibleTo Include="$(AssemblyName).UnitTest"/>
-        <InternalsVisibleTo Include="$(AssemblyName).IntegrationTest"/>
-        <InternalsVisibleTo Include="$(AssemblyName).Common"/>
+        <InternalsVisibleTo Include="$(AssemblyName).Test.Common"/>
+        <InternalsVisibleTo Include="$(AssemblyName).Test.Domain"/>
+        <InternalsVisibleTo Include="$(AssemblyName).Test.Integration"/>
     </ItemGroup>
 </Project>

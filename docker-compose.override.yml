@@ -42,7 +42,7 @@
       - "traefik.http.routers.traefik=true"
 
   aspire:
-    image: mcr.microsoft.com/dotnet/aspire-dashboard:8.0.0
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:8.1.0
     profiles:
       - infra
     labels:

@@ -1,7 +1,6 @@
 ﻿using FastEndpoints;
 using FastEndpoints.AspVersioning;
 using Microsoft.AspNetCore.Builder;
-using Weather.Forecast.Common.HttpClient;
 using Weather.Forecast.Feature.Forecast.Endpoint.Response;
 using Weather.SharedKernel;
 
@@ -13,20 +12,25 @@ internal sealed class GetForecastFrom(OpenWeatherMapClient client)
     public override void Configure()
     {
         Get("/forecasts");
-        Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
-        Summary(s => { s.Summary = "get forecast data from a city"; });
+        Options(o => o.WithVersionSet(ForecastApiVersionSet.ForecastSet).MapToApiVersion(DefaultApiVersionSet.DefaultApiVersion));
+        Summary(s =>
+        {
+            s.Summary = "get forecast data from a city"; 
+            s.ExampleRequest = ForecastOpenApiDocumentationConstant.GetForecastFromRequest;
+            s.Response(example: ForecastOpenApiDocumentationConstant.ForecastResponse);
+        });
     }
 
     public override async Task HandleAsync(GetForecastFromRequest req, CancellationToken ct)
     {
         var forecast = await client.GetForecastFrom(req.City);
-
+        
         if (forecast is null)
         {
             await SendNotFoundAsync(ct);
             return;
         }
-
+        
         await SendOkAsync(forecast.ToResponse(), ct);
     }
 }
