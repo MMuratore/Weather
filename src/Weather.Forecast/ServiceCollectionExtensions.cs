@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Weather.Forecast.Common.Authorization;
-using Weather.Forecast.Common.HttpClient;
 using Weather.Forecast.Common.Persistence;
 using Weather.Forecast.Feature.Forecast;
 using Weather.Forecast.Feature.Meteorologist;
