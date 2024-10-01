@@ -34,7 +34,7 @@ internal sealed class HttpContextProcessor(IHttpContextAccessor httpContextAcces
 
         if (response.StatusCode < (int)HttpStatusCode.BadRequest) return;
         
-        data.SetTag(nameof(HttpRequest), JsonSerializer.Serialize(httpContextAccessor.HttpContext?.Request));
-        data.SetTag(nameof(HttpResponse), JsonSerializer.Serialize(response));
+        data.SetTag(nameof(HttpRequest), httpContextAccessor.HttpContext?.Request);
+        data.SetTag(nameof(HttpResponse), response);
     }
 }
