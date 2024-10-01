@@ -7,7 +7,13 @@ public abstract class BaseIntegrationTest(ApiFactory app) : TestBase
 {
     protected readonly ApiFactory App = app;
 
-    protected override Task TearDownAsync() => App.DatabaseFixture.ResetDatabaseAsync();
+    protected override async Task TearDownAsync()
+    {
+        App.Client.DefaultRequestHeaders.Remove(MockAuthenticationHandler.Connected);
+        App.Client.DefaultRequestHeaders.Remove(MockAuthenticationHandler.UserId);
+        App.Client.DefaultRequestHeaders.Remove(MockAuthenticationHandler.UserRole);
+        await App.DatabaseFixture.ResetDatabaseAsync();
+    }
 }
 
 [CollectionDefinition(Name)]

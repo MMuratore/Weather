@@ -2,6 +2,7 @@
 using FastEndpoints.AspVersioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Weather.Forecast.Common.Authorization;
 using Weather.Forecast.Common.Persistence;
 using Weather.Forecast.Feature.Forecast.Domain;
 using Weather.Forecast.Feature.Forecast.Endpoint.Response;
@@ -16,6 +17,7 @@ internal sealed class CreateRandomForecast(ForecastFactory factory, ForecastDbCo
     public override void Configure()
     {
         Post("/forecasts/random");
+        Policies(ApplicationAuthorizationPolicy.Admin);
         Options(o => o.WithVersionSet(WeatherApiVersion.Name).MapToApiVersion(WeatherApiVersion.DefaultApiVersion));
         Summary(s => { s.Summary = "generate a random forecast"; });
     }

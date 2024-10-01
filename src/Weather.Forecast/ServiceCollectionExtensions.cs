@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Builder;
+using Weather.Forecast.Common.Authorization;
 using Weather.Forecast.Common.HttpClient;
 using Weather.Forecast.Common.Persistence;
 using Weather.Forecast.Feature.Forecast;
@@ -15,11 +16,12 @@ public static class ServiceCollectionExtensions
         moduleAssemblies.Add(typeof(ServiceCollectionExtensions).Assembly);
 
         builder.AddHttpClient();
-        builder.AddPersistence();
+        builder.AddPersistence(); 
         builder.AddTransactionalDispatcher<ForecastDbContext>();
-
+        builder.AddForecastAuthorizationPolicy();
+        
         builder.AddForecastFeature();
-
+        
         return builder;
     }
 }

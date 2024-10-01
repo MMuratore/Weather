@@ -24,7 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Common\"/>
         <Folder Include="Common\Persistence\Migrations\"/>
         <Folder Include="Feature\"/>
     </ItemGroup>
