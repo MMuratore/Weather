@@ -1,7 +1,6 @@
 ﻿using FastEndpoints;
 using FastEndpoints.AspVersioning;
 using Microsoft.AspNetCore.Builder;
-using Weather.Forecast.Common.HttpClient;
 using Weather.Forecast.Feature.Forecast.Endpoint.Response;
 using Weather.SharedKernel;
 
@@ -25,13 +24,13 @@ internal sealed class GetForecastFrom(OpenWeatherMapClient client)
     public override async Task HandleAsync(GetForecastFromRequest req, CancellationToken ct)
     {
         var forecast = await client.GetForecastFrom(req.City);
-
+        
         if (forecast is null)
         {
             await SendNotFoundAsync(ct);
             return;
         }
-
+        
         await SendOkAsync(forecast.ToResponse(), ct);
     }
 }

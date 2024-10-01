@@ -1,14 +1,12 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.Extensions.Options;
-using Weather.Forecast.Common.Persistence;
 using Weather.Forecast.Feature.Forecast.Domain;
 using Weather.Forecast.Feature.Forecast.Domain.ValueObject;
 
-namespace Weather.Forecast.Common.HttpClient;
+namespace Weather.Forecast.Feature.Forecast;
 
 internal sealed class OpenWeatherMapClient(
     System.Net.Http.HttpClient client,
-    ForecastDbContext dbContext,
     IOptions<OpenWeatherMapOptions> options)
 {
     private readonly OpenWeatherMapOptions Options = options.Value;
@@ -22,8 +20,6 @@ internal sealed class OpenWeatherMapClient(
 
         var date = DateOnly.FromDateTime(DateTime.UnixEpoch.AddSeconds(response.dt));
         var forecast = WeatherForecast.Create(date, new Temperature((decimal)response.main.temp));
-        await dbContext.Set<WeatherForecast>().AddAsync(forecast);
-        await dbContext.SaveChangesAsync();
 
         return forecast;
     }
