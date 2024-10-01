@@ -14,7 +14,12 @@ internal sealed class GetForecast(ForecastDbContext dbContext) : Endpoint<GetFor
     {
         Get("/forecasts/{id:guid}");
         Options(o => o.WithVersionSet(ForecastApiVersionSet.ForecastSet).MapToApiVersion(DefaultApiVersionSet.DefaultApiVersion));
-        Summary(s => { s.Summary = "get a forecast by id"; });
+        Summary(s =>
+        {
+            s.Summary = "get a forecast by id"; 
+            s.ExampleRequest = ForecastOpenApiDocumentationConstant.GetForecastRequest;
+            s.Response(example: ForecastOpenApiDocumentationConstant.ForecastResponse);
+        });
     }
 
     public override Task HandleAsync(GetForecastRequest req, CancellationToken ct)

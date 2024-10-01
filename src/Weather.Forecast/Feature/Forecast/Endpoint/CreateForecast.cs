@@ -18,7 +18,11 @@ internal sealed class CreateForecast(ForecastDbContext dbContext)
     {
         Post("/forecasts");
         Options(o => o.WithVersionSet(ForecastApiVersionSet.ForecastSet).MapToApiVersion(DefaultApiVersionSet.DefaultApiVersion));
-        Summary(s => { s.Summary = "generate a forecast"; });
+        Summary(s =>
+        {
+            s.Summary = "generate a forecast";
+            s.ExampleRequest = ForecastOpenApiDocumentationConstant.CreateForecastRequest;
+        });
     }
 
     public override async Task HandleAsync(CreateForecastRequest req, CancellationToken ct)

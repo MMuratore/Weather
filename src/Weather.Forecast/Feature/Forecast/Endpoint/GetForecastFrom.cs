@@ -14,7 +14,12 @@ internal sealed class GetForecastFrom(OpenWeatherMapClient client)
     {
         Get("/forecasts");
         Options(o => o.WithVersionSet(ForecastApiVersionSet.ForecastSet).MapToApiVersion(DefaultApiVersionSet.DefaultApiVersion));
-        Summary(s => { s.Summary = "get forecast data from a city"; });
+        Summary(s =>
+        {
+            s.Summary = "get forecast data from a city"; 
+            s.ExampleRequest = ForecastOpenApiDocumentationConstant.GetForecastFromRequest;
+            s.Response(example: ForecastOpenApiDocumentationConstant.ForecastResponse);
+        });
     }
 
     public override async Task HandleAsync(GetForecastFromRequest req, CancellationToken ct)

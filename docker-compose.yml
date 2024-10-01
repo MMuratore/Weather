@@ -15,7 +15,7 @@
       Authentication__Swagger__Scopes__0: openid
       OpenWeatherMap__BaseUrl: https://api.openweathermap.org/data/2.5/
       OutboxMessageProcessor__Period: 00:00:15
-      OutboxMessageProcessor__MaximumConcurrentMessage: null
+      OutboxMessageProcessor__MaximumConcurrentMessage: 1000
       Email__DefaultFrom: random@acme.com
       Email__Smtp__Host: papercut
       Email__Smtp__Port: 25

@@ -20,7 +20,11 @@ internal sealed class GetRandomForecast(ILogger<GetRandomForecast> logger, Forec
         Get("/forecasts/random");
         Options(o => o.WithVersionSet(ForecastApiVersionSet.ForecastSet).MapToApiVersion(DefaultApiVersionSet.DefaultApiVersion));
         AllowAnonymous();
-        Summary(s => { s.Summary = "get a random number of forecast data order by date"; });
+        Summary(s =>
+        {
+            s.Summary = "get a random number of forecast data order by date";
+            s.Response(example: ForecastOpenApiDocumentationConstant.ForecastResponses);
+        });
     }
 
     public override async Task<Results<Ok<List<ForecastResponse>>, ProblemDetails>> ExecuteAsync(CancellationToken ct)

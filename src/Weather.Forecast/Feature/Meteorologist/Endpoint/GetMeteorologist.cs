@@ -14,7 +14,12 @@ internal sealed class GetMeteorologist(ForecastDbContext dbContext)
     {
         Get("/meteorologists/{id:guid}");
         Options(o => o.WithVersionSet(MeteorologistApiVersionSet.MeteorologistSet).MapToApiVersion(DefaultApiVersionSet.DefaultApiVersion));
-        Summary(s => { s.Summary = "get a meteorologist by id"; });
+        Summary(s =>
+        {
+            s.Summary = "get a meteorologist by id";
+            s.ExampleRequest = MeteorologistOpenApiDocumentationConstant.GetMeteorologistRequest;
+            s.Response(example: MeteorologistOpenApiDocumentationConstant.MeteorologistResponse);
+        });
     }
 
     public override Task HandleAsync(GetMeteorologistRequest req, CancellationToken ct)
@@ -25,6 +30,13 @@ internal sealed class GetMeteorologist(ForecastDbContext dbContext)
     }
 }
 
+
+
+internal sealed record GetMeteorologistRequest
+{
+    public Guid Id { get; init; }
+}
+
 internal sealed record MeteorologistResponse(string Fullname, int Age, Prestige Prestige);
 
 internal static class MeteorologistResponseMapper
@@ -33,7 +45,3 @@ internal static class MeteorologistResponseMapper
         new(model.Name.Fullname, model.BirthDay.Age, model.Prestige);
 }
 
-internal sealed record GetMeteorologistRequest
-{
-    public Guid Id { get; init; }
-}

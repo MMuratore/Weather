@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NSwag;
 using NSwag.AspNetCore;
-using Weather.Forecast;
 using Weather.SharedKernel;
 using Weather.SharedKernel.FastEndpoint;
 
