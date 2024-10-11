@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Weather.Forecast.Common.Persistence;
 using Weather.Forecast.Feature.Forecast.Domain.Event;
 using Weather.Forecast.Feature.Meteorologist.Domain.Error;
+using Weather.SharedKernel.Domain.Exception;
 using Weather.SharedKernel.Event;
-using Weather.SharedKernel.Exception;
 
 namespace Weather.Forecast.Feature.Meteorologist.Domain.Handler;
 
@@ -18,7 +18,7 @@ internal sealed class ForecastRecordByHandler(IPublisher publisher, ForecastDbCo
         var meteorologist = await dbContext.Set<Meteorologist>()
             .FirstOrDefaultAsync(x => x.Id == notification.MeteorologistId, cancellationToken);
 
-        if (meteorologist is null) throw new NotFoundException(nameof(notification.MeteorologistId),MeteorologistError.MeteorologistNotFound);
+        if (meteorologist is null) throw new DomainNotFoundException(nameof(notification.MeteorologistId),MeteorologistError.MeteorologistNotFound);
 
         meteorologist.IncrementForecast();
     }

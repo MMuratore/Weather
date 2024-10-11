@@ -1,4 +1,4 @@
-﻿namespace Weather.SharedKernel.Exception;
+﻿namespace Weather.SharedKernel.Domain.Exception;
 
 public abstract class DomainException : System.Exception
 {

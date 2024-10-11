@@ -1,5 +1,5 @@
 using Weather.Forecast.Feature.Meteorologist.Domain.Error;
-using Weather.SharedKernel.Exception;
+using Weather.SharedKernel.Domain.Exception;
 
 namespace Weather.Forecast.Feature.Meteorologist.Domain.ValueObject;
 
@@ -7,7 +7,7 @@ internal record BirthDate(DateOnly Date, TimeOnly? Hour = null)
 {
     public DateOnly Date { get; init; } = Date <= DateOnly.FromDateTime(TimeProvider.System.GetUtcNow().Date)
         ? Date
-        : throw new ConflictException(nameof(Date),BirthDateError.BirthDateCannotBeInFuture);
+        : throw new DomainConflictException(nameof(Date),BirthDateError.BirthDateCannotBeInFuture);
 
     public int Age => CalculateAge();
 

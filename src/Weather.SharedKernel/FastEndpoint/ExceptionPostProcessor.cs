@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using FastEndpoints;
 using Microsoft.Extensions.Logging;
-using Weather.SharedKernel.Exception;
+using Weather.SharedKernel.Domain.Exception;
 
 namespace Weather.SharedKernel.FastEndpoint;
 
@@ -20,11 +20,11 @@ public sealed class ExceptionPostProcessor(ILogger<ExceptionPostProcessor> logge
 
         var status = domainException switch
         {
-            ConflictException => HttpStatusCode.Conflict,
-            ForbiddenException => HttpStatusCode.Forbidden,
-            NotFoundException => HttpStatusCode.NotFound,
-            UnauthorizedException => HttpStatusCode.Unauthorized,
-            ValidationException => HttpStatusCode.BadRequest,
+            DomainConflictException => HttpStatusCode.Conflict,
+            DomainForbiddenException => HttpStatusCode.Forbidden,
+            DomainNotFoundException => HttpStatusCode.NotFound,
+            DomainUnauthorizedException => HttpStatusCode.Unauthorized,
+            DomainValidationException => HttpStatusCode.BadRequest,
             _ => HttpStatusCode.InternalServerError
         };
         
